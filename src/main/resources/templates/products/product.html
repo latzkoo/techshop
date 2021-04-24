@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Apple iPhone 12 Max - TechShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="page-header">
+        <div class="row py-5">
+            <div class="col-12"><h1>Termékek › Mobiltelefon</h1></div>
+        </div>
+    </section>
+    <section class="product container pt-5 pb-3">
+        <div class="row my-5">
+            <div class="col-6 text-center px-3">
+                <img src="/images/iphone-12-max-large.jpg" alt="" />
+            </div>
+            <div class="col-6 px-3">
+                <div class="title">Apple iPhone 12 Pro Max</div>
+                <div class="product-number"><strong>Cikkszám:</strong> MGDF3GH/A</div>
+                <div class="price">449 990 Ft</div>
+                <div class="description">
+                    <p>6.7" méretű kijelző<br />
+                    12 MegaPixel felbontású kamera<br />
+                    12 MegaPixel-es másodlagos kamera<br />
+                    7.4mm vastagság<br />
+                    226 gramm<br />
+                    Ujjlenyomat-olvasó<br />
+                    A készülék bizonyos mértékig vízálló, víztaszító<br />
+                    Beépített Wifi modem</p>
+                </div>
+                <div class="row cart-row pt-3">
+                    <div class="col-3 px-0">
+                        <input type="number" class="form-control numeric" name="pc" value="1" min="1" max="99" id="pc" />
+                        <label for="pc">db</label>
+                    </div>
+                    <div class="col-8 px-0 pl-3">
+                        <button class="btn btn-primary rounded">Kosárba tesz</button>
+                    </div>
+                </div>
+                <div class="favourite">Kívánságlistára</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 large-description">
+                <h3 class="pb-2">Részletes leírás</h3>
+                <p>Az 5G a mobilinternet új dimenziója az iPhone-on. Eddig sosem látott sebességre képes, és a leterhelt hálózatokon is jobban működik.4 Mostantól
+                    útközben sem gond a nagy fájlok letöltése és kiváló minőségű HDR-filmek streamelése. Az. Idegesítő. Akadozás. Nélkül. Minden okostelefon közül az
+                    iPhone tudja kezelni a legtöbb 5G-sávot, így több helyen használhatod ki vele az 5G előnyeit. Ez a hihetetlen sebesség az appok jövőjében is páratlan
+                    lehetőségeket nyit.</p>
+                <p>Az Éjszakai mód az előlapi kamerára is megérkezett, így gyengébb fényekben még részletgazdagabb és természetesebb színárnyalatú fotókat készíthetsz magadról.
+                    Az előlapi kamerán emellett a Deep Fusion, a Smart HDR 3 és a Dolby Vision-felvétel is működik. Így minden fényben a legjobb arcodat mutathatod.</p>
+            </div>
+        </div>
+    </section>
+    <section class="featured-row pb-5">
+        <footer th:replace="products/featured :: featured('Mások megvásárolták ezeket is', 'attached')"></footer>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

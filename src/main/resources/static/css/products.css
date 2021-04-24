@@ -1,0 +1,199 @@
+.products {
+    float: left;
+    width: 100%;
+}
+
+.products ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.products ul li {
+    float: left;
+    width: 100%;
+    padding: 0 15px 30px 15px;
+    margin: 0;
+    list-style-type: none;
+}
+.products ul li .box {
+    float: left;
+    width: 100%;
+    padding: 30px 10px 20px 10px;
+    box-shadow: 0 0 0 1px #ededed;
+    position: relative;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.products ul li:hover .box {
+    box-shadow: 0 0 20px 1px #ededed;
+}
+.products ul li .box .new {
+    background: #3f9d78;
+    border-radius: 5px;
+    font-size: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 99;
+    padding: 2px 5px;
+}
+.products ul li .image {
+    float: left;
+    width: 100%;
+    background: #fff;
+    text-align: center;
+}
+.products ul li .image img {
+    text-align: center;
+}
+.products ul li .title {
+    float: left;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 5px 0;
+    color: #252d30;
+}
+.products ul li button.btn {
+    font-size: 14px;
+    width: 100%;
+    position: relative;
+    z-index: 99;
+    margin-top: 5px;
+}
+.products ul li .price {
+    float: left;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 5px 0;
+    color: #888
+}
+
+@media (min-width: 768px) {
+    .products ul li {
+        width: 25%;
+    }
+    section.featured .products ul li {
+        width: 20%;
+    }
+}
+
+section.featured-row {
+    float: left;
+    width: 100%;
+}
+section.featured .subtitle {
+    float: left;
+    width: 100%;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+section.product-list h3 {
+    font-weight: 700;
+    font-size: 24px;
+}
+.categories {
+    float: left;
+    width: 100%;
+    line-height: 24px;
+}
+
+.categories ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.categories ul li {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.categories ul li a {
+    color: #252d30;
+    text-decoration: none;
+}
+.categories ul li a:hover,
+.categories ul li a.active {
+     color: #0084e8;
+}
+
+.list-header .count {
+    font-weight: 700;
+    font-size: 16px;
+}
+.sort-block {
+    float: right;
+}
+.sort-block label {
+    float: left;
+    margin: 3px 10px 0 0;
+}
+.sort-block select.sort {
+    float: right;
+    width: auto;
+    padding: 0 10px;
+    height: 30px;
+    font-size: 14px;
+}
+.product .title {
+    float: left;
+    width: 100%;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+.product .price {
+    float: left;
+    width: 100%;
+    font-weight: 700;
+    font-size: 24px;
+    margin: 30px 0 15px 0;
+    color: #0084e8;
+}
+
+.product .description {
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+    line-height: 24px;
+}
+
+.product .large-description {
+    line-height: 24px;
+    float: left;
+}
+.product .cart-row {
+    float: left;
+    width: 100%;
+}
+
+.pc-row input,
+.product .cart-row input {
+    float: left;
+    width: 70px;
+}
+.pc-row label,
+.product .cart-row label {
+    float: left;
+    font-weight: 700;
+    margin: 8px 0 0 10px;
+}
+.product .favourite {
+    float: left;
+    background: url("../images/favourite.svg") 0 0 no-repeat;
+    background-size: 20px 20px;
+    padding-left: 25px;
+    cursor: pointer;
+    margin-top: 30px;
+}

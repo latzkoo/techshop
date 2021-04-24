@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Pénztár - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="page-header">
+        <div class="row py-5">
+            <div class="col-12"><h1>Pénztár</h1></div>
+        </div>
+    </section>
+    <div class="container py-5">
+        <div class="cassa row my-5">
+            <div class="col-9 mt-4 pb-2 px-0 mx-auto shadow-lg bg-white">
+                <div class="row pt-4 pb-2 mt-2 px-4">
+                    <div class="col-12 subtitle">Összegzés</div>
+                </div>
+                <div class="row mt-2 px-4">
+                    <div class="col-6 subitem">Termékek</div>
+                    <div class="col-6 subitem text-right">749 970 Ft</div>
+                </div>
+                <div class="row mt-2 px-4">
+                    <div class="col-6 subitem">Szállítási díj</div>
+                    <div class="col-6 subitem text-right">0 Ft</div>
+                </div>
+                <div class="row mt-4 pb-4 px-4">
+                    <div class="col-6 total">Összesen:</div>
+                    <div class="col-6 total text-right">749 970 Ft</div>
+                </div>
+            </div>
+
+            <div class="col-9 mt-5 pb-2 px-0 mx-auto shadow-lg bg-white">
+                <form action="/penztar" method="post">
+                    <div class="row pt-4 pb-2 mt-2 px-4">
+                        <div class="col-12 subtitle">Szállítási adatok</div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-12">
+                            <label for="del_name">Név</label>
+                            <input class="form-control" type="text" name="del_name" id="del_name" required="required" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-6">
+                            <label for="del_zip">Irányítószám</label>
+                            <input class="form-control numeric" type="text" name="del_zip" id="del_zip" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="del_city">Település</label>
+                            <input class="form-control" type="text" name="del_city" id="del_city" required="required" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-6">
+                            <label for="del_street">Utca, házszám</label>
+                            <input class="form-control" type="text" name="del_street" id="del_street" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="del_phone">Telefonszám</label>
+                            <input class="form-control" type="text" name="del_phone" id="del_phone" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="row pt-4 pb-2 mt-3 px-4">
+                        <div class="col-12 subtitle">Számlázási adatok</div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-12">
+                            <label for="inv_name">Név / cégnév</label>
+                            <input class="form-control" type="text" name="inv_name" id="inv_name" required="required" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-6">
+                            <label for="inv_zip">Irányítószám</label>
+                            <input class="form-control numeric" type="text" name="inv_zip" id="inv_zip" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="inv_city">Település</label>
+                            <input class="form-control" type="text" name="inv_city" id="inv_city" required="required" />
+                        </div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-6">
+                            <label for="inv_street">Utca, házszám</label>
+                            <input class="form-control" type="text" name="inv_street" id="inv_street" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="inv_taxnum">Adószám</label>
+                            <input class="form-control" type="text" name="inv_taxnum" id="inv_taxnum" />
+                        </div>
+                    </div>
+
+
+                    <div class="row pt-4 pb-2 mt-3 px-4">
+                        <div class="col-12 subtitle">Fizetés</div>
+                    </div>
+                    <div class="row mb-3 pb-3 px-4">
+                        <div class="col-6">
+                            <label for="payment_method">Fizetési mód</label>
+                            <select class="form-control" id="payment_method">
+                                <option value="" disabled="disabled" selected="selected">Válasszon!</option>
+                                <option value="COD">Utánvéttel</option>
+                                <option value="BANK_TRANSFER">Előre utalással</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 px-4">
+                        <div class="col-12 py-3 px-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="terms" value="1" required="required" />
+                                <label class="custom-control-label" for="terms">Az Általános Szerződési Feltételeket elolvastam és elfogadom.</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 px-4">
+                        <div class="col-12 py-3 px-0">
+                            <div class="col-6 float-right">
+                                <button class="btn btn-primary w-100 float-right btn-lg rounded">Megrendelés elküldése</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.cassa .subtitle {
+    color: #0084e8;
+    font-size: 18px;
+    font-weight: 700;
+}
+.cassa .subitem {
+    font-size: 16px;
+    color: #888;
+}
+.cassa .total {
+    font-size: 18px;
+    font-weight: 700;
+}

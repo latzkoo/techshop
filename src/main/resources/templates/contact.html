@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Kapcsolat - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="page-header">
+        <div class="row py-5">
+            <div class="col-12"><h1>Kapcsolat</h1></div>
+        </div>
+    </section>
+    <div class="container py-5">
+        <div class="row my-5">
+            <div class="col-9 mx-auto">
+                <div class="content">
+                    <h3>TechShop Internetes áruház</h3>
+                    <p><strong>Székhely:</strong> 1037 Budapest, Bécsi út 314. 1/B 4/16.<br />
+                       <strong>Telefonszám:</strong> +36 70 466 7132<br />
+                       <strong>Adószám:</strong> 11223344-5-66</p>
+                    <p><strong>Készítette:</strong> Timári László, Győri Tünde<br />
+                       <strong>Neptun azonosító:</strong> UFZY03, FA4ZPW</p>
+                    <p><strong>Az oldal célja:</strong> Az adatbázis alapú rendszerek (IBL152L) tantárgy projektmunkájának megvalósítása<br />
+                       <strong>Oktató:</strong> Dr. Németh Gábor</p>
+                    <p><strong>Használt technológiák:</strong> Spring Boot 2.4.5, Oracle 12c database, HTML5, CSS3<br />
+                       <strong>GitHub:</strong> http://gitlab-okt.sed.hu/</p>
+                    <p>2021. április 23.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

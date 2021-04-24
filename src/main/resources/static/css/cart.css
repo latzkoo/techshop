@@ -1,0 +1,43 @@
+.cart {
+    float: left;
+    width: 100%;
+}
+.cart .title {
+    float: left;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+}
+.cart .product-number {
+    float: left;
+    width: 100%;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.cart .price {
+    float: right;
+    text-align: right;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.cart .btn {
+    height: 30px;
+    font-size: 14px;
+    padding: 0 20px;
+}
+.cart .cart-item {
+    border-bottom: 1px solid #dcdcdc;
+}
+.cart .cart-item:last-child {
+    border: none;
+}
+.cart .pc-row {
+    float: right;
+}
+.summary {
+    font-weight: 700;
+    font-size: 20px;
+}

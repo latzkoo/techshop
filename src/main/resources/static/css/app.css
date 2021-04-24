@@ -1,0 +1,85 @@
+@import "fonts.css";
+@import "header.css";
+@import "footer.css";
+@import "billboard.css";
+@import "icons.css";
+@import "products.css";
+@import "cart.css";
+@import "cassa.css";
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #252d30;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.row {
+    margin: 0;
+    clear: both;
+}
+
+@media (min-width: 576px) {
+    .container, .container-md, .container-sm {
+        max-width: 100%;
+    }
+}
+@media (min-width: 768px) {
+    .container, .container-md, .container-sm {
+         max-width: 100%;
+    }
+}
+@media (min-width: 1200px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 1140px;
+    }
+}
+
+button[disabled="disabled"] {
+    opacity: 0.6;
+}
+button.rounded {
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 50rem !important;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+section.page-header {
+    background: #eeeeee;
+    border-bottom: 1px solid #dcdcdc;
+    text-align: center;
+}
+section.page-header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    color: #464d50;
+}
+input.form-control {
+    font-family: 'Open Sans', sans-serif;
+    border-radius: 0 !important;
+    height: 40px;
+    font-size: 14px;
+    color: #252d30;
+}
+.content {
+    float: left;
+    width: 100%;
+    line-height: 24px;
+    font-size: 16px;
+}
+.product h3,
+.content h3 {
+    font-weight: 700;
+    font-size: 24px;
+}
+.content p {
+    margin: 20px 0;
+}

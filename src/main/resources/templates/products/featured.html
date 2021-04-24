@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<section class="featured" th:fragment="featured(title, type)">
+    <div class="container">
+        <div class="row pt-5 pb-2 px-0">
+            <div class="col-12 px-0">
+                <div class="subtitle px-2 pb-3" th:text="${title}"></div>
+                <div class="products">
+                    <ul>
+                        <li th:each="item, i : ${#numbers.sequence(1, 5, 1)}">
+                            <div class="box"><a href="/termekek/mobiltelefon/iphone-12-max">
+                                <th:block th:if="${type == 'new'}">
+                                    <span class="new">Új termék</span>
+                                </th:block>
+                                <div class="image"><img src="/images/iphone-12-max.jpg" alt=""/></div>
+                                <div class="title">Apple iPhone 12 Max</div>
+                                <div class="price">449 990 Ft</div></a>
+                                <button class="btn btn-primary rounded">Kosárba tesz</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

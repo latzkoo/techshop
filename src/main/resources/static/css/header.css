@@ -1,0 +1,105 @@
+header {
+    float: left;
+    width: 100%;
+    border-bottom: 10px solid #0084e8;
+}
+
+header .top {
+    float: left;
+    width: 100%;
+    background: #1f1f1f;
+    padding: 15px 0;
+    color: #fff;
+}
+
+header .top a,
+header .top a:hover {
+    color: #fff;
+}
+
+header .bottom {
+    float: left;
+    width: 100%;
+}
+header .bottom .logo a,
+header .bottom .logo a:hover {
+    font-family: 'Montserrat', sans-serif;
+    float: left;
+    font-size: 40px;
+    font-weight: 700;
+    display: block;
+    color: #252d30;
+    text-decoration: none;
+    letter-spacing: -4px;
+}
+
+header .bottom nav {
+    float: left;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 20px 0 0 30px;
+}
+header .bottom nav a {
+    color: #252d30;
+    text-decoration: none;
+}
+header .bottom nav a:hover {
+    color: #0084e8;
+}
+
+header .bottom .search {
+    font-family: 'Open Sans', sans-serif;
+    border-radius: 40px 0 0 40px;
+    border: 2px solid #0084e8;
+    font-size: 14px;
+    height: 40px;
+}
+header .bottom .search-block {
+    margin-top: 12px;
+}
+header .bottom .btn {
+    background: #0084e8 url("../images/magnify.svg") center center no-repeat;
+    background-size: 20px 20px;
+    border-radius: 0 40px 40px 0;
+    width: 50px;
+}
+
+header .bottom .icons {
+    float: right;
+    margin-top: 15px;
+}
+
+header .bottom .favourites {
+    float: left;
+    background: url("../images/favourite.svg") center bottom no-repeat;
+    background-size: 24px 24px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+}
+
+header .bottom .bag {
+    float: right;
+}
+header .bottom .bag a {
+    float: left;
+    background: url("../images/bag.svg") left center no-repeat;
+    background-size: 32px 32px;
+    height: 32px;
+    position: relative;
+    font-weight: 700;
+    padding: 8px 0 0 40px;
+    text-align: right;
+    text-decoration: none;
+    color: #252d30;
+}
+
+header .bottom .bag .badge,
+header .bottom .favourites .badge {
+    background: #0084e8;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+}

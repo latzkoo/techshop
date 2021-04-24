@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header">
+    <div class="top">
+         <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6">A legolcsóbb tech webáruház</div>
+                <div class="col-12 col-md-6 text-right">
+                    <a href="/belepes">Bejelentkezés</a>
+                    <a class="ml-4" href="/regisztracio">Regisztráció</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="container">
+            <div class="row pt-3 pb-2">
+                <div class="col-6">
+                    <div class="logo"><a href="/">TechShop</a></div>
+                    <nav>
+                        <a class="ml-3" href="/termekek">Termékek</a>
+                        <a class="ml-3" href="/kapcsolat">Kapcsolat</a>
+                    </nav>
+                </div>
+                <div class="col-3">
+                    <div class="input-group search-block mb-3">
+                        <input type="text" class="form-control search" placeholder="Keresés az áruházban" name="q" value="" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="button-addon2"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="icons">
+                        <div class="favourites"><span class="badge">0</span></div>
+                        <div class="bag ml-3"><a href="/kosar"><span class="badge">0</span> 0 Ft</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

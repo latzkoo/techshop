@@ -1,0 +1,24 @@
+section.icons {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ededed;
+}
+
+section.icons .icon {
+    float: left;
+    font-weight: 600;
+    padding-left: 55px;
+    font-size: 16px;
+}
+section.icons .icon.delivery { background: url("../images/icon-delivery.png") 0 0 no-repeat; }
+section.icons .icon.return { background: url("../images/icon-return.png") 0 0 no-repeat; }
+section.icons .icon.help { background: url("../images/icon-help.png") 0 0 no-repeat; }
+
+section.icons .icon span {
+    float: left;
+    width: 100%;
+    font-weight: 400;
+    color: #888;
+    display: block;
+    font-size: 14px;
+}

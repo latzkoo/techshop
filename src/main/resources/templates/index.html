@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>TechShop - A legolcsóbb tech webáruház</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="billboard">
+        <div class="container">
+            <div class="row">
+                <div class="col col-8 col-md-6">
+                    <div class="box-centered">
+                        <div class="text">
+                            <div class="title">Hozz ki többet az életedből!</div>
+                            <div class="description my-4">Soha többé nem fogod elszalasztani a tökéletes fotót. Ismerd meg a Galaxy S21 5G és S21+ 5G készülékeket.</div>
+                            <a href="/termekek"><button class="btn btn-lg btn-primary rounded">Tudjon meg többet!</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="icons py-2 py-md-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 py-3 py-md-0 col-md-4">
+                    <div class="icon delivery">Ingyenes szállítás<span>20 000 Ft feletti rendelés esetén</span></div>
+                </div>
+                <div class="col-12 py-3 py-md-0 col-md-4">
+                    <div class="icon return">Ingyenes visszaküldés<span>15 napon belül</span></div>
+                </div>
+                <div class="col-12 py-3 py-md-0 col-md-4">
+                    <div class="icon help">Segítségünk<span>Keresse ügyfélszolgálatunkat!</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="featured-row pb-5">
+        <footer th:replace="products/featured :: featured('Legújabb okosórák', 'new')"></footer>
+        <footer th:replace="products/featured :: featured('Legújabb okostelefonok', 'new')"></footer>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
