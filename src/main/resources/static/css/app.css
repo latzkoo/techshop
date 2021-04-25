@@ -83,3 +83,7 @@ input.form-control {
 .content p {
     margin: 20px 0;
 }
+
+.error {
+    color: #b21f2d;
+}

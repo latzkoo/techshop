@@ -22,41 +22,48 @@
     <div class="container py-5">
         <div class="row my-5">
             <div class="col-6 py-5 mx-auto shadow-lg">
-                <form action="/regisztracio" method="post">
+                <!--/*@thymesVar id="user" type="hu.db.techshop.User"*/-->
+                <form th:action="@{/regisztracio}" method="post" th:object="${user}">
                     <div class="row mb-3">
                         <div class="col-6">
                             <label for="lastname">Vezetéknév</label>
-                            <input class="form-control" type="text" name="lastname" id="lastname" required="required" />
+                            <input class="form-control" type="text" th:field="*{lastname}" id="lastname" required="required" />
+                            <span class="error" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
                         </div>
                         <div class="col-6">
                             <label for="firstname">Keresztnév</label>
-                            <input class="form-control" type="text" name="firstname" id="firstname" required="required" />
+                            <input class="form-control" type="text" th:field="*{firstname}" id="firstname" required="required" />
+                            <span class="error" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="email">E-mail cím</label>
-                            <input class="form-control" type="email" name="email" id="email" required="required" />
+                            <input class="form-control" type="email" th:field="*{email}" id="email" required="required" />
+                            <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
                             <label for="passwd">Jelszó</label>
-                            <input class="form-control" type="password" name="passwd" id="passwd" required="required" />
+                            <input class="form-control" type="password" th:field="*{password}" id="passwd" required="required" />
+                            <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                         </div>
                         <div class="col-6">
                             <label for="passwdconfirmation">Jelszó megerősítése</label>
-                            <input class="form-control" type="password" name="passwdconfirmation"
+                            <input class="form-control" type="password" th:field="*{passwordConfirmation}"
                                    id="passwdconfirmation" required="required" />
+                            <span class="error" th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></span>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-12 py-3">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="terms" value="1" required="required" />
+                                <input type="checkbox" class="custom-control-input" id="terms" th:field="*{terms}" required="required" />
                                 <label class="custom-control-label" for="terms">Az adatvédelmi tájékoztatót elolvastam és elfogadom.</label>
                             </div>
+                            <span class="error" th:if="${#fields.hasErrors('terms')}" th:errors="*{terms}"></span>
                         </div>
                     </div>
 
