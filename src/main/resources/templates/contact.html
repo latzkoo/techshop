@@ -16,25 +16,13 @@
 <main role="main" class="flex-shrink-0">
     <section class="page-header">
         <div class="row py-5">
-            <div class="col-12"><h1>Kapcsolat</h1></div>
+            <div class="col-12"><h1 th:text="${content.getTitle()}"></h1></div>
         </div>
     </section>
     <div class="container py-5">
         <div class="row my-5">
             <div class="col-9 mx-auto">
-                <div class="content">
-                    <h3>TechShop Internetes áruház</h3>
-                    <p><strong>Székhely:</strong> 1037 Budapest, Bécsi út 314. 1/B 4/16.<br />
-                       <strong>Telefonszám:</strong> +36 70 466 7132<br />
-                       <strong>Adószám:</strong> 11223344-5-66</p>
-                    <p><strong>Készítette:</strong> Timári László, Győri Tünde<br />
-                       <strong>Neptun azonosító:</strong> UFZY03, FA4ZPW</p>
-                    <p><strong>Az oldal célja:</strong> Az adatbázis alapú rendszerek (IBL152L) tantárgy projektmunkájának megvalósítása<br />
-                       <strong>Oktató:</strong> Dr. Németh Gábor</p>
-                    <p><strong>Használt technológiák:</strong> Spring Boot 2.4.5, Oracle 12c database, HTML5, CSS3<br />
-                       <strong>GitHub:</strong> http://gitlab-okt.sed.hu/</p>
-                    <p>2021. április 23.</p>
-                </div>
+                <div class="content" th:utext="${content.getContent()}"></div>
             </div>
         </div>
     </div>

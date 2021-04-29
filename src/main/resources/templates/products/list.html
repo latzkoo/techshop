@@ -14,54 +14,32 @@
 <header th:replace="fragments/header :: header"></header>
 
 <main role="main" class="flex-shrink-0">
-    <section class="page-header">
-        <div class="row py-5">
-            <div class="col-12"><h1>Termékek › Mobiltelefon</h1></div>
-        </div>
-    </section>
+    <header th:replace="fragments/productheader :: productheader"></header>
     <section class="product-list container py-5">
         <div class="row my-5">
-            <div class="col-2">
-                <h3>Kategóriák</h3>
-                <div class="categories mt-2"><ul>
-                    <li><a href="/termekek/fenykepezogep">Fényképezőgép</a></li>
-                    <li><a href="/termekek/fotos-tartozek">Fotós tartozék</a></li>
-                    <li><a href="/termekek/haztartasi-kisgep">Háztartási kisgép</a></li>
-                    <li><a href="/termekek/kavegep">Kávégép</a></li>
-                    <li><a href="/termekek/mobiltelefon">Mobiltelefon</a></li>
-                    <li><a href="/termekek/notebook">Notebook</a></li>
-                    <li><a href="/termekek/nyomtato">Nyomtató</a></li>
-                    <li><a href="/termekek/okosora">Okosóra</a></li>
-                    <li><a href="/termekek/robotporszivo">Robotporszívó</a></li>
-                    <li><a href="/termekek/tablet">Tablet</a></li>
-                    <li><a href="/termekek/televizio">Televízió</a></li>
-                    <li><a href="/termekek/videokamera">Videókamera</a></li>
-                </ul></div>
-            </div>
+            <div th:replace="fragments/categories :: categories"></div>
             <div class="col-10">
                 <div class="row mt-1 mb-3 list-header">
-                    <div class="col-6 count">20 termék</div>
+                    <div class="col-6 count"><span th:text="${productList.size()}"></span> termék</div>
                     <div class="col-6">
                         <div class="sort-block">
                             <label for="sort">Rendezés:</label>
                             <select class="form-control sort" id="sort">
                                 <option value="title">Név szerint</option>
-                                <option value="price">Ár szerint</option>
+                                <option value="price" th:selected="${#request.getParameter('sort')} == 'price'">Ár szerint</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="products">
                     <ul>
-                        <li th:each="movie, i : ${#numbers.sequence(1, 20, 1)}">
-                            <div class="box"><a href="/termekek/mobiltelefon/iphone-12-max">
-                                <th:block th:if="${type == 'new'}">
-                                    <span class="new">Új termék</span>
-                                </th:block>
-                                <div class="image"><img src="/images/iphone-12-max.jpg" alt=""/></div>
-                                <div class="title">Apple iPhone 12 Max</div>
-                                <div class="price">449 990 Ft</div></a>
-                                <button class="btn btn-primary rounded">Kosárba tesz</button>
+                        <li th:each="product, i : ${productList}">
+                            <div class="box"><a th:href="${('/termekek/'+product.getCategorySlug()+'/' + product.getSlug())}">
+                                <div class="image"><img th:src="'/uploads/products/thumbs/' + ${product.getImage()}"
+                                                        th:alt="${product.getProductName()}" /></div>
+                                <div class="title" th:text="${product.getProductName()}"></div>
+                                <div class="price" th:text="${#numbers.formatInteger(product.getPrice(), 0, 'WHITESPACE') + ' Ft'}"></div></a>
+                                <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>
                             </div>
                         </li>
                     </ul>

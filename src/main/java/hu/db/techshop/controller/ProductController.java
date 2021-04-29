@@ -1,28 +1,62 @@
 package hu.db.techshop.controller;
 
+import hu.db.techshop.dao.CategoryDAO;
+import hu.db.techshop.dao.ProductDAO;
+import hu.db.techshop.model.Category;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProductController {
 
+    @Autowired
+    CategoryDAO categoryDAO;
+
+    @Autowired
+    ProductDAO productDAO;
+
     @GetMapping(value = "/termekek")
-    public String index(Model model, HttpServletRequest request) {
+    public String index(@RequestParam(name = "sort", required = false) String sort,  Model model, HttpServletRequest request) {
+        model.addAttribute("categoryList", categoryDAO.findAll());
+        model.addAttribute("productList", productDAO.findAll(sort));
+
         return "products/list";
     }
 
-    @GetMapping(value = "/termekek/{category}")
-    public String category(@PathVariable String category, Model model, HttpServletRequest request) {
+    @GetMapping(value = "/termekek/{slug}")
+    public String category(@RequestParam(name = "sort", required = false) String sort,
+                           @PathVariable String slug, Model model, HttpServletRequest request) {
+        Category category = categoryDAO.findBySlug(slug);
+        model.addAttribute("categoryList", categoryDAO.findAll());
+        model.addAttribute("category", category);
+        model.addAttribute("productList", productDAO.findAll(sort, category.getId()));
+
         return "products/list";
     }
 
     @GetMapping(value = "/termekek/{category}/{slug}")
     public String get(@PathVariable String category, @PathVariable String slug, Model model, HttpServletRequest request) {
+        model.addAttribute("category", categoryDAO.findBySlug(category));
+        model.addAttribute("product", productDAO.findBySlug(slug));
+
         return "products/product";
+    }
+
+    @GetMapping(value = "/kereses")
+    public String search(@RequestParam(name = "sort", required = false) String sort,
+                         @RequestParam(name = "q", required = false) String keyword,
+                         Model model, HttpServletRequest request) {
+        if (keyword != null && !keyword.equals("")) {
+            model.addAttribute("productList", productDAO.findAll(sort, keyword));
+        }
+
+        return "products/search";
     }
 
 }

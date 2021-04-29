@@ -8,6 +8,7 @@ public interface CategoryDAO {
 
     List<Category> findAll();
     Category findById(int id);
+    Category findBySlug(String slug);
     Category save(Category category);
     void delete(Category category);
 

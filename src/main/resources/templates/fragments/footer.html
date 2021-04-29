@@ -10,18 +10,9 @@
                 <div class="col-12 col-md-8">
                     <div class="title">Termékkategóriák</div>
                     <nav><ul>
-                        <li><a href="/termekek/fenykepezogep">Fényképezőgép</a></li>
-                        <li><a href="/termekek/fotos-tartozek">Fotós tartozék</a></li>
-                        <li><a href="/termekek/haztartasi-kisgep">Háztartási kisgép</a></li>
-                        <li><a href="/termekek/kavegep">Kávégép</a></li>
-                        <li><a href="/termekek/mobiltelefon">Mobiltelefon</a></li>
-                        <li><a href="/termekek/notebook">Notebook</a></li>
-                        <li><a href="/termekek/nyomtato">Nyomtató</a></li>
-                        <li><a href="/termekek/okosora">Okosóra</a></li>
-                        <li><a href="/termekek/robotporszivo">Robotporszívó</a></li>
-                        <li><a href="/termekek/tablet">Tablet</a></li>
-                        <li><a href="/termekek/televizio">Televízió</a></li>
-                        <li><a href="/termekek/videokamera">Videókamera</a></li>
+                        <li th:each="category : ${categoryList}">
+                            <a th:href="(${'/termekek/'+(category.getSlug())})" th:text="${category.getCategoryName()}"></a>
+                        </li>
                     </ul></nav>
                 </div>
             </div>

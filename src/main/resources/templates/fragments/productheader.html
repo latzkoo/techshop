@@ -1,0 +1,6 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<section class="page-header" th:fragment="productheader">
+    <div class="row py-5">
+        <div class="col-12"><h1>Termékek<span th:if="${category != null}" th:text="${' › '+category.getCategoryName()}"></span></h1></div>
+    </div>
+</section>

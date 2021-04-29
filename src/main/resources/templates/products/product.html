@@ -14,37 +14,24 @@
 <header th:replace="fragments/header :: header"></header>
 
 <main role="main" class="flex-shrink-0">
-    <section class="page-header">
-        <div class="row py-5">
-            <div class="col-12"><h1>Termékek › Mobiltelefon</h1></div>
-        </div>
-    </section>
+    <header th:replace="fragments/productheader :: productheader"></header>
     <section class="product container pt-5 pb-3">
         <div class="row my-5">
             <div class="col-6 text-center px-3">
-                <img src="/images/iphone-12-max-large.jpg" alt="" />
+                <img th:src="'/uploads/products/large/' + ${product.getImage()}" th:alt="${product.getProductName()}" />
             </div>
             <div class="col-6 px-3">
-                <div class="title">Apple iPhone 12 Pro Max</div>
-                <div class="product-number"><strong>Cikkszám:</strong> MGDF3GH/A</div>
-                <div class="price">449 990 Ft</div>
-                <div class="description">
-                    <p>6.7" méretű kijelző<br />
-                    12 MegaPixel felbontású kamera<br />
-                    12 MegaPixel-es másodlagos kamera<br />
-                    7.4mm vastagság<br />
-                    226 gramm<br />
-                    Ujjlenyomat-olvasó<br />
-                    A készülék bizonyos mértékig vízálló, víztaszító<br />
-                    Beépített Wifi modem</p>
-                </div>
+                <div class="title" th:text="${product.getProductName()}"></div>
+                <div class="product-number"><strong>Cikkszám:</strong> <span th:text="${product.getProductNumber()}" th:remove="tag"></span></div>
+                <div class="price" th:text="${#numbers.formatInteger(product.getPrice(), 0, 'WHITESPACE') + ' Ft'}"></div>
+                <div class="description" th:utext="${product.getShortDescription()}"></div>
                 <div class="row cart-row pt-3">
                     <div class="col-3 px-0">
-                        <input type="number" class="form-control numeric" name="pc" value="1" min="1" max="99" id="pc" />
+                        <input type="number" class="form-control numeric productQty" name="qty" value="1" min="1" max="99" id="pc" />
                         <label for="pc">db</label>
                     </div>
                     <div class="col-8 px-0 pl-3">
-                        <button class="btn btn-primary rounded">Kosárba tesz</button>
+                        <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>
                     </div>
                 </div>
                 <div class="favourite">Kívánságlistára</div>
@@ -53,12 +40,7 @@
         <div class="row">
             <div class="col-12 large-description">
                 <h3 class="pb-2">Részletes leírás</h3>
-                <p>Az 5G a mobilinternet új dimenziója az iPhone-on. Eddig sosem látott sebességre képes, és a leterhelt hálózatokon is jobban működik.4 Mostantól
-                    útközben sem gond a nagy fájlok letöltése és kiváló minőségű HDR-filmek streamelése. Az. Idegesítő. Akadozás. Nélkül. Minden okostelefon közül az
-                    iPhone tudja kezelni a legtöbb 5G-sávot, így több helyen használhatod ki vele az 5G előnyeit. Ez a hihetetlen sebesség az appok jövőjében is páratlan
-                    lehetőségeket nyit.</p>
-                <p>Az Éjszakai mód az előlapi kamerára is megérkezett, így gyengébb fényekben még részletgazdagabb és természetesebb színárnyalatú fotókat készíthetsz magadról.
-                    Az előlapi kamerán emellett a Deep Fusion, a Smart HDR 3 és a Dolby Vision-felvétel is működik. Így minden fényben a legjobb arcodat mutathatod.</p>
+                <div th:utext="${product.getDescription()}"></div>
             </div>
         </div>
     </section>

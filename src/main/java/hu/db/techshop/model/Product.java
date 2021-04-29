@@ -1,9 +1,10 @@
 package hu.db.techshop.model;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Product {
+public class Product implements Serializable {
 
     private int id;
 
@@ -30,39 +31,14 @@ public class Product {
     @NotEmpty(message = "A mező kitöltése kötelező!")
     private double vat;
 
+    @NotEmpty(message = "A mező kitöltése kötelező!")
+    private String image;
+
     private boolean active;
     private Timestamp createdAt;
+    private String categorySlug;
 
     public Product() {
-    }
-
-    public Product(int categoryId, String productNumber, String productName, String slug,
-                   String shortDescription, String description, int price, double vat, boolean active) {
-        this.categoryId = categoryId;
-        this.productNumber = productNumber;
-        this.productName = productName;
-        this.slug = slug;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.price = price;
-        this.vat = vat;
-        this.active = active;
-    }
-
-    public Product(int id, int categoryId, String productNumber, String productName,
-                   String slug, String shortDescription, String description, int price,
-                   double vat, boolean active, Timestamp createdAt) {
-        this.id = id;
-        this.categoryId = categoryId;
-        this.productNumber = productNumber;
-        this.productName = productName;
-        this.slug = slug;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.price = price;
-        this.vat = vat;
-        this.active = active;
-        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -137,6 +113,14 @@ public class Product {
         this.vat = vat;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -151,5 +135,13 @@ public class Product {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCategorySlug() {
+        return categorySlug;
+    }
+
+    public void setCategorySlug(String categorySlug) {
+        this.categorySlug = categorySlug;
     }
 }

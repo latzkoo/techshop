@@ -1,6 +1,8 @@
 package hu.db.techshop.controller;
 
-import hu.db.techshop.dao.UserDAOImpl;
+import hu.db.techshop.dao.CategoryDAO;
+import hu.db.techshop.dao.ProductDAO;
+import hu.db.techshop.model.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 public class MainController {
 
     @Autowired
-    UserDAOImpl userDAO;
+    CategoryDAO categoryDAO;
+
+    @Autowired
+    ProductDAO productDAO;
+
+    @Autowired
+    Cart cart;
 
     @GetMapping(value = "/")
     public String index(Model model, HttpServletRequest request) {
 //        if (request.getSession().getAttribute("USERID") != null) {
 //            User user = userDAO.findById((int) request.getSession().getAttribute("USERID"));
 //        }
+        model.addAttribute("categoryList", categoryDAO.findAll());
 
         return "index";
     }

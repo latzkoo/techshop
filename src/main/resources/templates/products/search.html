@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Termékek - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="page-header" th:fragment="productheader">
+        <div class="row py-5">
+            <div class="col-12"><h1>Keresés<span th:if="${#request.getParameter('q') != null && !#request.getParameter('q').equals('')}"
+                                                 th:text="' › ' + ${#request.getParameter('q')}"></span></h1></div>
+        </div>
+    </section>
+    <section class="featured container py-5">
+        <div class="row my-5">
+            <div th:if="${productList != null && productList.size() > 0}" th:remove="tag">
+                <div class="col-12">
+                    <div class="row mt-1 mb-3 list-header">
+                        <div class="col-6 count"><span th:text="${productList.size()}"></span> termék</div>
+                        <div class="col-6">
+                            <div class="sort-block">
+                                <label for="sort">Rendezés:</label>
+                                <select class="form-control sort" id="sort">
+                                    <option value="title">Név szerint</option>
+                                    <option value="price" th:selected="${#request.getParameter('sort')} == 'price'">Ár szerint</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="products">
+                        <ul>
+                            <li th:each="product, i : ${productList}">
+                                <div class="box"><a th:href="${('/termekek/'+product.getCategorySlug()+'/' + product.getSlug())}">
+                                    <div class="image"><img th:src="'/uploads/products/thumbs/' + ${product.getImage()}"
+                                                            th:alt="${product.getProductName()}" /></div>
+                                    <div class="title" th:text="${product.getProductName()}"></div>
+                                    <div class="price" th:text="${#numbers.formatInteger(product.getPrice(), 0, 'WHITESPACE') + ' Ft'}"></div></a>
+                                    <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${productList != null && productList.size() > 0}" th:remove="tag">
+                <div class="col-12 noresult">A keresés nem eredményezett találatot.</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
