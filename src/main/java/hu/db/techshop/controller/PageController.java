@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ContactController {
+public class PageController {
 
     @Autowired
     ContentDAO contentDAO;
@@ -19,11 +19,19 @@ public class ContactController {
     CategoryDAO categoryDAO;
 
     @GetMapping(value = "/kapcsolat")
-    public String index(Model model, HttpServletRequest request) {
+    public String contact(Model model, HttpServletRequest request) {
         model.addAttribute("categoryList", categoryDAO.findAll());
         model.addAttribute("content", contentDAO.findById(1));
 
-        return "contact";
+        return "page";
+    }
+
+    @GetMapping(value = "/koszonjuk")
+    public String thankyou(Model model, HttpServletRequest request) {
+        model.addAttribute("categoryList", categoryDAO.findAll());
+        model.addAttribute("content", contentDAO.findById(2));
+
+        return "page";
     }
 
 }

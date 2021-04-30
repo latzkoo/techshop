@@ -23,6 +23,8 @@
         <div class="row my-5">
             <div class="col-6 py-5 mx-auto shadow-lg">
                 <form action="/belepes" method="post">
+                    <input type="hidden" name="referer" th:if="${#request.getHeader('referer') != null}"
+                           th:value="${#request.getHeader('referer')}" />
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="email">E-mail cím</label>

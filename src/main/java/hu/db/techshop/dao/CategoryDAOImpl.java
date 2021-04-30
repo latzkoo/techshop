@@ -32,14 +32,14 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM TS_PRODUCT_CATEGORY ORDER BY CATEGORYNAME";
+        String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 ORDER BY CATEGORYNAME";
         return jdbcTemplate.query(query, (row, i) -> categoryMapper(row));
     }
 
     @Override
     public Category findById(int id) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ID=?";
+            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 AND ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -61,7 +61,7 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
     @Override
     public Category findBySlug(String slug) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE SLUG=?";
+            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 AND SLUG=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setString(1, slug);
             ResultSet result = statement.executeQuery();

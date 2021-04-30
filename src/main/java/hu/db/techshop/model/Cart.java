@@ -59,10 +59,12 @@ public class Cart implements Serializable {
         return items;
     }
 
-    public List<CartItem> remove(int productId) {
-        items.removeIf(cartItem -> cartItem.getProduct().getId() == productId);
+    public void empty() {
+        items.clear();
+    }
 
-        return items;
+    public void remove(int productId) {
+        items.removeIf(cartItem -> cartItem.getProduct().getId() == productId);
     }
 
     public int value() {

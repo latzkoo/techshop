@@ -31,7 +31,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     public List<Product> findAll(String sort) {
         String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
-                       "WHERE P.CATEGORYID=C.ID " +
+                       "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
         return jdbcTemplate.query(query, (row, i) -> productMapper(row, false));
     }
@@ -40,7 +40,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     public List<Product> findAll(String sort, int categoryId) {
         String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
-                       "WHERE P.CATEGORYID=C.ID AND P.CATEGORYID=? " +
+                       "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 AND P.CATEGORYID=? " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
         return jdbcTemplate.query(query, preparedStatement -> {
                     preparedStatement.setInt(1, categoryId);
@@ -50,9 +50,9 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     @Override
     public List<Product> findAll(String sort, String keyword) {
         String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
-                "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
-                "WHERE P.CATEGORYID=C.ID AND LOWER(P.PRODUCTNAME) LIKE ? " +
-                "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
+                       "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
+                       "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 AND LOWER(P.PRODUCTNAME) LIKE ? " +
+                       "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
         return jdbcTemplate.query(query, preparedStatement -> {
             preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
         }, (row, i) -> productMapper(row, false));
@@ -61,7 +61,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     @Override
     public Product findById(int id) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT WHERE ID=?";
+            String query = "SELECT * FROM TS_PRODUCT WHERE ACTIVE=1 AND ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -83,7 +83,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     @Override
     public Product findBySlug(String slug) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT WHERE SLUG=?";
+            String query = "SELECT * FROM TS_PRODUCT WHERE ACTIVE=1 AND SLUG=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setString(1, slug);
             ResultSet result = statement.executeQuery();

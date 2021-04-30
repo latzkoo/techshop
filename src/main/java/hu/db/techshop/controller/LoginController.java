@@ -24,6 +24,7 @@ public class LoginController {
 
     @PostMapping(value = "/belepes")
     public String loginSuccess(@RequestParam("email") String email, @RequestParam("passwd") String passwd,
+                               @RequestParam(value = "referer", required = false) String referer,
                                HttpServletRequest request, Model model) {
         User user = userDAO.getUserByEmailAndPassword(email, passwd);
 
@@ -33,12 +34,12 @@ public class LoginController {
 
         request.getSession().setAttribute("USERID", user.getId());
 
-        return "redirect:/";
+        return "redirect:" + (referer != null ? referer : '/');
     }
 
     @GetMapping(value = "/kilepes")
     public String logout(Model model, HttpServletRequest request) {
-        request.getSession().invalidate();
+        request.getSession().removeAttribute("USERID");
 
         return "redirect:/";
     }

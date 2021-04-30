@@ -27,7 +27,7 @@
                 </div>
                 <div class="row mt-2 px-4">
                     <div class="col-6 subitem">Termékek</div>
-                    <div class="col-6 subitem text-right">749 970 Ft</div>
+                    <div class="col-6 subitem text-right" th:text="${#numbers.formatInteger(@cart.value(), 0, 'WHITESPACE') + ' Ft'}"></div>
                 </div>
                 <div class="row mt-2 px-4">
                     <div class="col-6 subitem">Szállítási díj</div>
@@ -35,39 +35,45 @@
                 </div>
                 <div class="row mt-4 pb-4 px-4">
                     <div class="col-6 total">Összesen:</div>
-                    <div class="col-6 total text-right">749 970 Ft</div>
+                    <div class="col-6 total text-right" th:text="${#numbers.formatInteger(@cart.value(), 0, 'WHITESPACE') + ' Ft'}"></div>
                 </div>
             </div>
 
             <div class="col-9 mt-5 pb-2 px-0 mx-auto shadow-lg bg-white">
-                <form action="/penztar" method="post">
+                <!--/*@thymesVar id="order" type="hu.db.techshop.Order"*/-->
+                <form th:action="@{/penztar}" method="post" th:object="${order}">
                     <div class="row pt-4 pb-2 mt-2 px-4">
                         <div class="col-12 subtitle">Szállítási adatok</div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-12">
-                            <label for="del_name">Név</label>
-                            <input class="form-control" type="text" name="del_name" id="del_name" required="required" />
+                            <label for="shippingName">Név</label>
+                            <input class="form-control" type="text" th:field="*{shippingName}" id="shippingName"  />
+                            <span class="error" th:if="${#fields.hasErrors('shippingName')}" th:errors="*{shippingName}"></span>
                         </div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-6">
-                            <label for="del_zip">Irányítószám</label>
-                            <input class="form-control numeric" type="text" name="del_zip" id="del_zip" required="required" />
+                            <label for="shippingZip">Irányítószám</label>
+                            <input class="form-control numeric" type="text" th:field="*{shippingZip}" id="shippingZip" maxlength="4" />
+                            <span class="error" th:if="${#fields.hasErrors('shippingZip')}" th:errors="*{shippingZip}"></span>
                         </div>
                         <div class="col-6">
-                            <label for="del_city">Település</label>
-                            <input class="form-control" type="text" name="del_city" id="del_city" required="required" />
+                            <label for="shippingCity">Település</label>
+                            <input class="form-control" type="text" th:field="*{shippingCity}" id="shippingCity"  />
+                            <span class="error" th:if="${#fields.hasErrors('shippingCity')}" th:errors="*{shippingCity}"></span>
                         </div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-6">
-                            <label for="del_street">Utca, házszám</label>
-                            <input class="form-control" type="text" name="del_street" id="del_street" required="required" />
+                            <label for="shippingStreet">Utca, házszám</label>
+                            <input class="form-control" type="text" th:field="*{shippingStreet}" id="shippingStreet"  />
+                            <span class="error" th:if="${#fields.hasErrors('shippingStreet')}" th:errors="*{shippingStreet}"></span>
                         </div>
                         <div class="col-6">
-                            <label for="del_phone">Telefonszám</label>
-                            <input class="form-control" type="text" name="del_phone" id="del_phone" required="required" />
+                            <label for="shippingPhone">Telefonszám</label>
+                            <input class="form-control" type="text" th:field="*{shippingPhone}" id="shippingPhone"  maxlength="20" />
+                            <span class="error" th:if="${#fields.hasErrors('shippingPhone')}" th:errors="*{shippingPhone}"></span>
                         </div>
                     </div>
 
@@ -76,52 +82,60 @@
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-12">
-                            <label for="inv_name">Név / cégnév</label>
-                            <input class="form-control" type="text" name="inv_name" id="inv_name" required="required" />
+                            <label for="billingName">Név / cégnév</label>
+                            <input class="form-control" type="text" th:field="*{billingName}" id="billingName"  />
+                            <span class="error" th:if="${#fields.hasErrors('billingName')}" th:errors="*{billingName}"></span>
                         </div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-6">
-                            <label for="inv_zip">Irányítószám</label>
-                            <input class="form-control numeric" type="text" name="inv_zip" id="inv_zip" required="required" />
+                            <label for="billingZip">Irányítószám</label>
+                            <input class="form-control numeric" type="text" th:field="*{billingZip}" id="billingZip"
+                                    maxlength="4" />
+                            <span class="error" th:if="${#fields.hasErrors('billingZip')}" th:errors="*{billingZip}"></span>
                         </div>
                         <div class="col-6">
-                            <label for="inv_city">Település</label>
-                            <input class="form-control" type="text" name="inv_city" id="inv_city" required="required" />
+                            <label for="billingCity">Település</label>
+                            <input class="form-control" type="text" th:field="*{billingCity}" id="billingCity"  />
+                            <span class="error" th:if="${#fields.hasErrors('billingCity')}" th:errors="*{billingCity}"></span>
                         </div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-6">
-                            <label for="inv_street">Utca, házszám</label>
-                            <input class="form-control" type="text" name="inv_street" id="inv_street" required="required" />
+                            <label for="billingStreet">Utca, házszám</label>
+                            <input class="form-control" type="text" th:field="*{billingStreet}" id="billingStreet"  />
+                            <span class="error" th:if="${#fields.hasErrors('billingStreet')}" th:errors="*{billingStreet}"></span>
                         </div>
                         <div class="col-6">
-                            <label for="inv_taxnum">Adószám</label>
-                            <input class="form-control" type="text" name="inv_taxnum" id="inv_taxnum" />
+                            <label for="billingTaxNumber">Adószám</label>
+                            <input class="form-control" type="text" th:field="*{billingTaxNumber}" id="billingTaxNumber" />
+                            <span class="error" th:if="${#fields.hasErrors('billingTaxNumber')}" th:errors="*{billingTaxNumber}"></span>
                         </div>
                     </div>
 
 
                     <div class="row pt-4 pb-2 mt-3 px-4">
+
                         <div class="col-12 subtitle">Fizetés</div>
                     </div>
                     <div class="row mb-3 pb-3 px-4">
                         <div class="col-6">
-                            <label for="payment_method">Fizetési mód</label>
-                            <select class="form-control" id="payment_method">
-                                <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-                                <option value="COD">Utánvéttel</option>
-                                <option value="BANK_TRANSFER">Előre utalással</option>
+                            <label for="paymentMethodId">Fizetési mód</label>
+                            <select class="form-control" th:field="*{paymentMethodId}" id="paymentMethodId">
+                                <option th:each="paymentMethod, i : ${paymentMethods}" th:value="${paymentMethod.getId()}"
+                                        th:text="${paymentMethod.getPaymentMethod()}"></option>
                             </select>
+                            <span class="error" th:if="${#fields.hasErrors('paymentMethodId')}" th:errors="*{paymentMethodId}"></span>
                         </div>
                     </div>
 
                     <div class="row mb-3 px-4">
                         <div class="col-12 py-3 px-3">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="terms" value="1" required="required" />
+                                <input type="checkbox" class="custom-control-input" id="terms" th:field="*{terms}"  />
                                 <label class="custom-control-label" for="terms">Az Általános Szerződési Feltételeket elolvastam és elfogadom.</label>
                             </div>
+                            <span class="error" th:if="${#fields.hasErrors('shippingStreet')}" th:errors="*{shippingStreet}"></span>
                         </div>
                     </div>
 

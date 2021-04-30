@@ -24,9 +24,6 @@ public class MainController {
 
     @GetMapping(value = "/")
     public String index(Model model, HttpServletRequest request) {
-//        if (request.getSession().getAttribute("USERID") != null) {
-//            User user = userDAO.findById((int) request.getSession().getAttribute("USERID"));
-//        }
         model.addAttribute("categoryList", categoryDAO.findAll());
 
         return "index";
