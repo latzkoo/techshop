@@ -7,13 +7,13 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.List;
 
 @Repository
@@ -45,10 +45,10 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Order orderStatus = orderMapper(result);
+                Order order = orderMapper(result);
                 statement.close();
 
-                return orderStatus;
+                return order;
             }
         }
         catch (SQLException e) {
@@ -59,6 +59,7 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     }
 
     @Override
+    @Transactional
     public Order save(Order order, int userId) {
         try {
             // Insert

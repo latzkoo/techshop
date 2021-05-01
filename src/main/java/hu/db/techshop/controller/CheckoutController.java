@@ -1,9 +1,9 @@
 package hu.db.techshop.controller;
 
-import hu.db.techshop.dao.OrderDAO;
 import hu.db.techshop.dao.PaymentMethodDAO;
 import hu.db.techshop.model.Cart;
 import hu.db.techshop.model.Order;
+import hu.db.techshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ public class CheckoutController {
     PaymentMethodDAO paymentMethodDAO;
 
     @Autowired
-    OrderDAO orderDAO;
+    OrderService orderService;
 
     @GetMapping(value = "/kosar")
     public String cart(@RequestParam(name = "delete", required = false) String productId,
@@ -60,8 +60,7 @@ public class CheckoutController {
             return "checkout";
         }
 
-        orderDAO.save(order, (int) request.getSession().getAttribute("USERID"));
-        cart.empty();
+        orderService.addOrder(order, cart, (int) request.getSession().getAttribute("USERID"));
 
         return "redirect:/koszonjuk";
     }
