@@ -1,0 +1,10 @@
+<svg height='30px' width='30px' fill="#ffffff" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" version="1.1" x="0px" y="0px">
+    <title>Burger, hamburger, menu</title>
+    <desc>Created with Sketch.</desc>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(6.000000, 9.000000)" fill="#ffffff" fill-rule="nonzero">
+            <path d="M0,8 L0,6 L20,6 L20,8 L0,8 Z M0,14 L0,12 L20,12 L20,14 L0,14 Z M0,2 L0,0 L20,0 L20,2 L0,2 Z"></path>
+        </g>
+    </g>
+</svg>

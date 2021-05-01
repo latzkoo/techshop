@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Admin - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/admin/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+<main role="main" class="row h-100">
+    <section class="login col-12 my-auto px-3">
+        <div class="brand text-center mb-3">TechShop</div>
+        <div class="container bg-white rounded shadow-sm p-4">
+            <form action="/admin/login" method="post">
+                <div class="wrapper mx-auto">
+                    <div class="col-12 m-auto order-md-1 form-block px-0 pt-3">
+                        <div class="mb-3">
+                            <label for="email">E-mail cím</label>
+                            <input type="email" class="form-control" id="email" name="email" required="required" />
+                        </div>
+
+                        <div class="col-md-12 mb-3 p-0">
+                            <label for="passwd">Jelszó</label>
+                            <input type="password" class="form-control" id="passwd" name="passwd" required="required" />
+                        </div>
+
+                        <button class="btn btn-primary btn-register btn-lg btn-block mt-4" type="submit">Belépés</button>
+                        <div class="text-danger pt-3 text-center"
+                             th:if="${#request.getParameter('error') != null}">Hibás e-mail cím vagy jelszó!</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<script th:src="@{/admin/js/vendor.js}"></script>
+<script th:src="@{/admin/js/app.js}"></script>
+</body>
+</html>

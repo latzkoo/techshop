@@ -1,4 +1,4 @@
-package hu.db.techshop.controller;
+package hu.db.techshop.controller.admin;
 
 import hu.db.techshop.dao.UserDAO;
 import hu.db.techshop.model.User;
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class LoginController {
+public class AdminLoginController {
 
     @Autowired
     private UserDAO userDAO;
 
-    @GetMapping(value = "/belepes")
+    @GetMapping(value = "/admin/login")
     public String index(Model model, HttpServletRequest request) {
-        return "login";
+        return "admin/login";
     }
 
-    @PostMapping(value = "/belepes")
+    @PostMapping(value = "/admin/login")
     public String loginSuccess(@RequestParam("email") String email, @RequestParam("passwd") String passwd,
                                @RequestParam(value = "referer", required = false) String referer,
                                HttpServletRequest request, Model model) {
-        User user = userDAO.getUserByEmailAndPassword(email, passwd, false);
+        User user = userDAO.getUserByEmailAndPassword(email, passwd, true);
 
         if (user == null) {
-            return "redirect:/belepes?error";
+            return "redirect:/admin/login?error";
         }
 
         request.getSession().setAttribute("USERID", user.getId());
@@ -38,15 +38,15 @@ public class LoginController {
             request.getSession().setAttribute("ADMIN", 1);
         }
 
-        return "redirect:" + (referer != null ? referer : '/');
+        return "redirect:/admin";
     }
 
-    @GetMapping(value = "/kilepes")
+    @GetMapping(value = "/admin/logout")
     public String logout(Model model, HttpServletRequest request) {
         request.getSession().removeAttribute("USERID");
         request.getSession().removeAttribute("ADMIN");
 
-        return "redirect:/";
+        return "redirect:/admin/login";
     }
 
 }

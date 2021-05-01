@@ -1,0 +1,11 @@
+.editor__editable,
+main .ck-editor[role='application'] .ck.ck-content,
+.ck.editor__editable[role='textbox'],
+.ck.ck-editor__editable[role='textbox'],
+.ck.editor[role='textbox'] {
+    padding: 0 15px;
+}
+
+.ck-editor__editable {
+    height: 400px;
+}

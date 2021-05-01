@@ -10,6 +10,6 @@ public interface UserDAO {
     User findById(int id);
     User save(User user);
     void delete(User user);
-    User getUserByEmailAndPassword(String email, String password);
+    User getUserByEmailAndPassword(String email, String password, boolean checkAdmin);
 
 }

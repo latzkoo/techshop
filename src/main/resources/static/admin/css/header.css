@@ -1,0 +1,46 @@
+header {
+    background: #343a40;
+}
+
+header a {
+    color: #fff;
+}
+
+.navbar-expand-md .navbar-nav .nav-link:hover,
+.navbar-expand-md .navbar-nav .nav-link.active {
+    color: #007bff;
+}
+
+header .container-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+header nav.navbar a.navbar-brand,
+.brand {
+    font-weight: 500;
+    font-size: 20px;
+    color: #fff;
+    text-transform: uppercase;
+}
+.brand {
+    color: #343a40;
+    font-size: 30px;
+}
+
+header nav.navbar a.navbar-brand span.label,
+.brand span.label {
+    float: left;
+}
+
+header nav.navbar .navbar-toggler-icon {
+    background-image: url("../images/menu.svg");
+    background-size: 30px 30px;
+}
+
+.dropdown-toggle::after {
+    position: absolute;
+    margin-top: 9px;
+    margin-left: 5px;
+}

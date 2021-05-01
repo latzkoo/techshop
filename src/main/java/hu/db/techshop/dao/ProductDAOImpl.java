@@ -29,7 +29,8 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
 
     @Override
     public List<Product> findAll(String sort) {
-        String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
+        String query = "SELECT P.ID, P.PRODUCTNAME, P.SLUG, P.PRICE, P.IMAGE," +
+                            "p.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
                        "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
@@ -135,6 +136,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
         product.setSlug(result.getString("slug"));
         product.setPrice(result.getInt("price"));
         product.setImage(result.getString("image"));
+        product.setCreatedAt(result.getTimestamp("createdat"));
 
         if (entity) {
             product.setProductNumber(result.getString("productnumber"));

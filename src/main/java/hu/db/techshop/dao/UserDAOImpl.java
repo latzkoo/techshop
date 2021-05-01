@@ -136,7 +136,7 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
         return user;
     }
 
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password, boolean checkAdmin) {
         try {
             String query = "SELECT * FROM TS_USER WHERE email=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
@@ -145,7 +145,16 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
 
             if (result.next()) {
                 if (passwordEncoder.matches(password, result.getString("password"))) {
-                    return userMapper(result);
+                    User user = userMapper(result);
+
+                    if (checkAdmin) {
+                        if (user.isAdmin()) {
+                            return user;
+                        }
+                    }
+                    else {
+                        return user;
+                    }
                 }
 
                 statement.close();
