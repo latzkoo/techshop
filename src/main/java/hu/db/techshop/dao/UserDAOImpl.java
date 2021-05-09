@@ -39,6 +39,17 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
     }
 
     @Override
+    public List<User> findAll(String keyword) {
+        String query = "SELECT * FROM TS_USER WHERE (LOWER(FIRSTNAME) LIKE ? OR LOWER(LASTNAME) LIKE ? OR LOWER(EMAIL) LIKE ?)" +
+                "ORDER BY LASTNAME, FIRSTNAME";
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(3, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> userMapper(row));
+    }
+
+    @Override
     public User findById(int id) {
         try {
             String query = "SELECT * FROM ts_user WHERE id=?";

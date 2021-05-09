@@ -32,8 +32,37 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
 
     @Override
     public List<Order> findAll() {
-        String query = "SELECT * FROM TS_ORDER ORDER BY CREATEADAT DESC";
+        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+                    "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                "FROM TS_ORDER O " +
+                "LEFT JOIN TS_USER U " +
+                "ON O.USERID=U.ID " +
+                "LEFT JOIN TS_PAYMENT_METHOD M " +
+                "ON O.PAYMENTMETHODID=M.ID " +
+                "ORDER BY O.CREATEDAT DESC";
         return jdbcTemplate.query(query, (row, i) -> orderMapper(row));
+    }
+
+    @Override
+    public List<Order> findAll(String keyword) {
+        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+                "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                "FROM TS_ORDER O " +
+                "LEFT JOIN TS_USER U " +
+                "ON O.USERID=U.ID " +
+                "LEFT JOIN TS_PAYMENT_METHOD M " +
+                "ON O.PAYMENTMETHODID=M.ID " +
+                "WHERE (O.ID IN(" +
+                    "SELECT OI.ORDERID " +
+                    "FROM TS_ORDER_ITEM OI, TS_PRODUCT P " +
+                    "WHERE OI.PRODUCTID=P.ID " +
+                    "AND LOWER(P.PRODUCTNAME) LIKE ?) OR M.PAYMENTMETHOD LIKE ?)" +
+                "ORDER BY O.CREATEDAT DESC";
+
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> orderMapper(row));
     }
 
     @Override
@@ -124,8 +153,18 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     }
 
     @Override
-    public void delete(Order order) {
+    public void delete(int orderId) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("DELETE FROM TS_ORDER WHERE ID=?");
 
+            statement.setInt(1, orderId);
+            statement.executeUpdate();
+
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Order orderMapper(ResultSet result) throws SQLException {
@@ -133,6 +172,10 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         order.setId(result.getInt("id"));
         order.setPaymentMethodId(result.getInt("paymentmethodid"));
         order.setCreatedAt(result.getTimestamp("createdat"));
+        order.setPaymentMethod(result.getString("paymentmethod"));
+        order.setFirstname(result.getString("firstname"));
+        order.setLastname(result.getString("lastname"));
+        order.setProductCount(result.getInt("count"));
 
         return order;
     }

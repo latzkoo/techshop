@@ -12,6 +12,7 @@ public class Category {
     private String slug;
     private boolean active;
     private Timestamp createdAt;
+    private int productCount;
 
     public Category() {
     }
@@ -68,5 +69,13 @@ public class Category {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getProductCount() {
+        return productCount;
+    }
+
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
     }
 }

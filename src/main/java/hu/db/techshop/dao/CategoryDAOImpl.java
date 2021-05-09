@@ -32,14 +32,60 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 ORDER BY CATEGORYNAME";
+        String query = "SELECT C.*, " +
+                "(SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                "FROM TS_PRODUCT_CATEGORY C " +
+                "ORDER BY C.CATEGORYNAME";
         return jdbcTemplate.query(query, (row, i) -> categoryMapper(row));
+    }
+
+    @Override
+    public List<Category> findAll(int status) {
+        String query = "SELECT C.*, " +
+                    "(SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                "FROM TS_PRODUCT_CATEGORY C " +
+                "WHERE C.ACTIVE = ? " +
+                "ORDER BY C.CATEGORYNAME";
+        return jdbcTemplate.query(query, preparedStatement -> {
+            if (status > 0) preparedStatement.setInt(1, 1);
+            else preparedStatement.setNull(1, Types.INTEGER);
+        }, (row, i) -> categoryMapper(row));
+    }
+
+    @Override
+    public List<Category> findAll(String keyword) {
+        String query = "SELECT C.*, " +
+                "(SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                "FROM TS_PRODUCT_CATEGORY C " +
+                "WHERE LOWER(CATEGORYNAME) LIKE ? " +
+                "ORDER BY C.CATEGORYNAME";
+
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> categoryMapper(row));
+    }
+
+    @Override
+    public List<Category> findAll(int status, String keyword) {
+        String query = "SELECT C.*, " +
+                "(SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                "FROM TS_PRODUCT_CATEGORY C " +
+                "WHERE C.ACTIVE = ? AND LOWER(CATEGORYNAME) LIKE ? " +
+                "ORDER BY C.CATEGORYNAME";
+
+        return jdbcTemplate.query(query, preparedStatement -> {
+            if (status > 0) preparedStatement.setInt(1, 1);
+            else preparedStatement.setNull(1, Types.INTEGER);
+
+            preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> categoryMapper(row));
     }
 
     @Override
     public Category findById(int id) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 AND ID=?";
+            String query = "SELECT C.*, (SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                    "FROM TS_PRODUCT_CATEGORY C WHERE C.ACTIVE=1 AND C.ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -61,7 +107,8 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
     @Override
     public Category findBySlug(String slug) {
         try {
-            String query = "SELECT * FROM TS_PRODUCT_CATEGORY WHERE ACTIVE=1 AND SLUG=?";
+            String query = "SELECT C.*, (SELECT COUNT(P.ID) FROM TS_PRODUCT P WHERE P.CATEGORYID = C.ID) AS COUNT " +
+                    "FROM TS_PRODUCT_CATEGORY C WHERE C.ACTIVE=1 AND C.SLUG=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setString(1, slug);
             ResultSet result = statement.executeQuery();
@@ -149,6 +196,7 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
         category.setSlug(result.getString("slug"));
         category.setActive(result.getBoolean("active"));
         category.setCreatedAt(result.getTimestamp("createdat"));
+        category.setProductCount(result.getInt("count"));
 
         return category;
     }

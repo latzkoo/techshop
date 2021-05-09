@@ -7,6 +7,7 @@ import java.util.List;
 public interface ContentDAO {
 
     List<Content> findAll();
+    List<Content> findAll(String keyword);
     Content findById(int id);
     Content save(Content content);
 

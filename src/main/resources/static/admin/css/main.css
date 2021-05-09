@@ -72,6 +72,9 @@ button.button-delete-item {
 .fix150 {
     width: 150px;
 }
+.fix200 {
+    width: 200px;
+}
 
 .admin-list-items {
     margin-top: 8px;

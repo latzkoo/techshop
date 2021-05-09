@@ -47,8 +47,12 @@ public class Order {
     @AssertTrue(message = "Nem fogadta el az Általános Szerződési Feltételeket!")
     private boolean terms;
 
-    private String statusId;
+    private int statusId;
     private Timestamp createdAt;
+    private String paymentMethod;
+    private String firstname;
+    private String lastname;
+    private int productCount;
 
     public Order() {
     }
@@ -165,11 +169,11 @@ public class Order {
         this.terms = terms;
     }
 
-    public String getStatusId() {
+    public int getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
+    public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
 
@@ -179,5 +183,37 @@ public class Order {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public int getProductCount() {
+        return productCount;
+    }
+
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
     }
 }

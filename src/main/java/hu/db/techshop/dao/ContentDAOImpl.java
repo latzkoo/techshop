@@ -1,6 +1,7 @@
 package hu.db.techshop.dao;
 
 import hu.db.techshop.model.Content;
+import hu.db.techshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -31,6 +32,15 @@ public class ContentDAOImpl extends JdbcDaoSupport implements ContentDAO {
     public List<Content> findAll() {
         String query = "SELECT * FROM TS_CONTENT ORDER BY TITLE";
         return jdbcTemplate.query(query, (row, i) -> contentMapper(row));
+    }
+
+    @Override
+    public List<Content> findAll(String keyword) {
+        String query = "SELECT * FROM TS_CONTENT WHERE LOWER(TITLE) LIKE ?" +
+                "ORDER BY TITLE";
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> contentMapper(row));
     }
 
     @Override

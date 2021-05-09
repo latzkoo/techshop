@@ -7,8 +7,9 @@ import java.util.List;
 public interface OrderDAO {
 
     List<Order> findAll();
+    List<Order> findAll(String keyword);
     Order findById(int id);
     Order save(Order order, int userId);
-    void delete(Order order);
+    void delete(int orderId);
 
 }
