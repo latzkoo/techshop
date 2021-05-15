@@ -1,20 +1,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<section class="featured" th:fragment="featured(title, type)">
+<section class="featured" th:fragment="featured(title, type, products)">
     <div class="container">
         <div class="row pt-5 pb-2 px-0">
             <div class="col-12 px-0">
                 <div class="subtitle px-3 pb-3" th:text="${title}"></div>
                 <div class="products">
                     <ul>
-                        <li th:each="item, i : ${#numbers.sequence(1, 5, 1)}">
-                            <div class="box"><a href="/termekek/mobiltelefon/iphone-12-max">
+                        <li th:each="product, i : ${products}">
+                            <div class="box"><a th:href="${('/termekek/'+product.getCategorySlug()+'/' + product.getSlug())}">
                                 <th:block th:if="${type == 'new'}">
                                     <span class="new">Új termék</span>
                                 </th:block>
-                                <div class="image"><img src="/images/iphone-12-max.jpg" alt=""/></div>
-                                <div class="title">Apple iPhone 12 Max</div>
-                                <div class="price">449 990 Ft</div></a>
-                                <button class="btn btn-primary rounded">Kosárba tesz</button>
+                                <div class="image"><img th:src="'/uploads/products/thumbs/' + ${product.getImage()}"
+                                                        th:alt="${product.getProductName()}" /></div>
+                                <div class="title" th:text="${product.getProductName()}"></div>
+                                <div class="price" th:text="${#numbers.formatInteger(product.getPrice(), 0, 'WHITESPACE') + ' Ft'}"></div></a>
+                                <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>
                             </div>
                         </li>
                     </ul>

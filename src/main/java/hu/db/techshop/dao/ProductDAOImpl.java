@@ -32,8 +32,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
 
     @Override
     public List<Product> findAll(String sort) {
-        String query = "SELECT P.ID, P.PRODUCTNAME, P.SLUG, P.PRICE, P.IMAGE," +
-                            "p.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
+        String query = "SELECT P.ID, P.PRODUCTNAME, P.SLUG, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
                        "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
@@ -42,7 +41,7 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
 
     @Override
     public List<Product> findAll(String sort, int categoryId) {
-        String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
+        String query = "SELECT P.ID, P.SLUG, P.PRODUCTNAME, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
                        "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 AND P.CATEGORYID=? " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
@@ -53,12 +52,42 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
 
     @Override
     public List<Product> findAll(String sort, String keyword) {
-        String query = "SELECT P.*, C.SLUG AS CATEGORYSLUG " +
+        String query = "SELECT P.ID, P.SLUG, P.PRODUCTNAME, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
                        "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
                        "WHERE P.CATEGORYID=C.ID AND P.ACTIVE=1 AND LOWER(P.PRODUCTNAME) LIKE ? " +
                        "ORDER BY " + (sort != null && sort.equals("price") ? "price" : "productname");
         return jdbcTemplate.query(query, preparedStatement -> {
             preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+        }, (row, i) -> productMapper(row, false));
+    }
+
+    @Override
+    public List<Product> findSimilar(Product product) {
+        String query = "SELECT P.ID, P.SLUG, P.PRODUCTNAME, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
+                "FROM TS_ORDER_ITEM I " +
+                "LEFT JOIN TS_PRODUCT P ON I.PRODUCTID=P.ID " +
+                "LEFT JOIN TS_PRODUCT_CATEGORY C ON P.CATEGORYID=C.ID " +
+                "WHERE P.ACTIVE = 1 " +
+                "AND I.ORDERID IN( SELECT OI.ORDERID FROM TS_ORDER_ITEM OI WHERE OI.PRODUCTID = ?) " +
+                "GROUP BY P.ID, P.SLUG, P.PRODUCTNAME, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG " +
+                "ORDER BY DBMS_RANDOM.RANDOM() " +
+                "FETCH FIRST 5 ROWS ONLY";
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setInt(1, product.getId());
+        }, (row, i) -> productMapper(row, false));
+    }
+
+    @Override
+    public List<Product> findFreshest(int categoryId) {
+        String query = "SELECT P.ID, P.SLUG, P.PRODUCTNAME, P.PRICE, P.IMAGE, P.CREATEDAT, C.SLUG AS CATEGORYSLUG " +
+                "FROM TS_PRODUCT P, TS_PRODUCT_CATEGORY C " +
+                "WHERE P.CATEGORYID=C.ID AND P.ACTIVE = 1 " +
+                "AND P.CREATEDAT > TRUNC(SYSDATE) - INTERVAL '30' DAY " +
+                "AND P.CATEGORYID = ?" +
+                "ORDER BY DBMS_RANDOM.RANDOM() " +
+                "FETCH FIRST 5 ROWS ONLY";
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setInt(1, categoryId);
         }, (row, i) -> productMapper(row, false));
     }
 

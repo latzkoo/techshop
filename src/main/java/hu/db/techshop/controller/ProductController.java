@@ -3,6 +3,7 @@ package hu.db.techshop.controller;
 import hu.db.techshop.dao.CategoryDAO;
 import hu.db.techshop.dao.ProductDAO;
 import hu.db.techshop.model.Category;
+import hu.db.techshop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,8 +43,11 @@ public class ProductController {
 
     @GetMapping(value = "/termekek/{category}/{slug}")
     public String get(@PathVariable String category, @PathVariable String slug, Model model, HttpServletRequest request) {
+        Product product = productDAO.findBySlug(slug);
+
         model.addAttribute("category", categoryDAO.findBySlug(category));
-        model.addAttribute("product", productDAO.findBySlug(slug));
+        model.addAttribute("product", product);
+        model.addAttribute("similar", productDAO.findSimilar(product));
 
         return "products/product";
     }

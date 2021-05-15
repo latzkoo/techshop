@@ -45,8 +45,8 @@
         </div>
     </section>
     <section class="featured-row pb-5">
-        <footer th:replace="products/featured :: featured('Legújabb okosórák', 'new')"></footer>
-        <footer th:replace="products/featured :: featured('Legújabb okostelefonok', 'new')"></footer>
+        <footer th:replace="products/featured :: featured('Legújabb okosórák', 'new', ${freshestMobiles})"></footer>
+        <footer th:replace="products/featured :: featured('Legújabb okostelefonok', 'new', ${freshestWatches})"></footer>
     </section>
 </main>
 
