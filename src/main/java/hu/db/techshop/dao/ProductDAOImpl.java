@@ -22,6 +22,9 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    CommentDAO commentDAO;
+
     @PostConstruct
     private void initialize() {
         setDataSource(dataSource);
@@ -91,6 +94,8 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
 
             if (result.next()) {
                 Product product = productMapper(result, true);
+                product.setComments(commentDAO.findAll(product.getId()));
+
                 statement.close();
 
                 return product;

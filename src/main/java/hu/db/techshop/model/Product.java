@@ -3,6 +3,7 @@ package hu.db.techshop.model;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Product implements Serializable {
 
@@ -37,6 +38,7 @@ public class Product implements Serializable {
     private boolean active;
     private Timestamp createdAt;
     private String categorySlug;
+    private List<Comment> comments;
 
     public Product() {
     }
@@ -143,5 +145,13 @@ public class Product implements Serializable {
 
     public void setCategorySlug(String categorySlug) {
         this.categorySlug = categorySlug;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="comments(comments)">
+    <h3 class="pb-2 px-0">Hozzászólások</h3>
+    <div th:each="comment : ${comments}">
+        <hr />
+        <div class="userinfo position-relative font-weight-bolder mt-2 mb-2">
+            <span class="text-primary" th:text="${comment.getUser().getLastname() + ' ' + comment.getUser().getFirstname()}"></span>
+            <span class="date ml-2 px-1" th:inline="text">[[${#dates.format(comment.getCreatedAt(),'yyyy.MM.dd HH:mm')}]]</span>
+            <th:block th:if="${comment.getUserId() == session.USERID}">
+                <button class="position-absolute btn btn-link btn-sm btn-delete-comment p-0"
+                        th:data-id="${comment.getId()}"
+                        th:data-productid="${comment.getProductId()}">Törlés</button>
+            </th:block>
+        </div>
+        <div class="text-justify mt-2 mb-4" th:text="${comment.getComment()}"></div>
+    </div>
+</div>

@@ -37,13 +37,48 @@
                 <div class="favourite">Kívánságlistára</div>
             </div>
         </div>
+        <th:block th:if="${product.getDescription() != null && product.getDescription() != ''}">
+            <div class="row">
+                <div class="col-12 large-description">
+                    <h3 class="pb-2">Részletes leírás</h3>
+                    <div th:utext="${product.getDescription()}"></div>
+                </div>
+            </div>
+        </th:block>
+
         <div class="row">
-            <div class="col-12 large-description">
-                <h3 class="pb-2">Részletes leírás</h3>
-                <div th:utext="${product.getDescription()}"></div>
+            <div class="col-12">
+                <div class="row mb-4 pb-4">
+                    <div class="col-12 px-0">
+                        <h3 class="mb-4">Szóljon hozzá!</h3>
+                        <th:block th:if="${session.USERID}">
+                            <form name="form-comment" th:action="${'/hozzaszolas/add/' + product.getId()}" method="post">
+                                <div class="form-group">
+                                    <label for="comment">Hozzászólás</label>
+                                    <textarea class="form-control" name="comment" id="comment" rows="7"
+                                              placeholder="Mit gondol a termékről?" required="required"></textarea>
+                                </div>
+                                <button class="btn btn-success btn-comment rounded" type="submit">Hozzászólok</button>
+                            </form>
+                        </th:block>
+                        <th:block th:if="!${session.USERID}">
+                            A hozzászólás küldéséhez <a href="/regisztracio">regisztráció</a> és <a href="/belepes">bejelentkezés</a> szükséges!
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row comment-list">
+            <div class="col-12">
+                <div id="comments">
+                    <div th:if="${product.getComments() != null && product.getComments().size() > 0}"
+                         th:replace="fragments/comments :: comments(${product.getComments()})"></div>
+                </div>
             </div>
         </div>
     </section>
+
     <section class="featured-row pb-5">
         <footer th:replace="products/featured :: featured('Mások megvásárolták ezeket is', 'attached')"></footer>
     </section>

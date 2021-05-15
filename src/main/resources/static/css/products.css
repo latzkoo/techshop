@@ -209,3 +209,12 @@ section.product-list h3 {
 .noresult {
     font-size: 16px;
 }
+
+.comment-list .btn-comment {
+    font-size: 14px;
+}
+
+.comment-list .btn-delete-comment {
+    top: 0;
+    right: 0;
+}
