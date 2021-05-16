@@ -13,6 +13,6 @@ public interface CategoryDAO {
     Category findById(int id);
     Category findBySlug(String slug);
     Category save(Category category);
-    void delete(Category category);
+    int delete(Category category);
 
 }

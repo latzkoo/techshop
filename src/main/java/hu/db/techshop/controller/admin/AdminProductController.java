@@ -84,9 +84,11 @@ public class AdminProductController {
             Util.deleteFile("uploads/products/thumbs/" + product.getImage());
         }
 
-        productDAO.delete(product);
+        if (productDAO.delete(product) > 0) {
+            return "redirect:/admin/products?success=delete";
+        }
 
-        return "redirect:/admin/products?success=delete";
+        return "redirect:/admin/products?error=delete";
     }
 
     @PostMapping(value = "/admin/products")

@@ -201,18 +201,21 @@ public class ProductDAOImpl extends JdbcDaoSupport implements ProductDAO {
     }
 
     @Override
-    public void delete(Product product) {
+    public int delete(Product product) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM TS_PRODUCT WHERE ID=?");
 
             statement.setInt(1, product.getId());
-            statement.executeUpdate();
-
+            int deleted = statement.executeUpdate();
             statement.close();
+
+            return deleted;
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     private Product productMapper(ResultSet result, boolean entity) throws SQLException {

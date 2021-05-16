@@ -65,9 +65,12 @@ public class AdminCategoryController {
         }
 
         Category category = categoryDAO.findById(id);
-        categoryDAO.delete(category);
 
-        return "redirect:/admin/categories?success=delete";
+        if (categoryDAO.delete(category) > 0) {
+            return "redirect:/admin/categories?success=delete";
+        }
+
+        return "redirect:/admin/categories?error=delete";
     }
 
     @PostMapping(value = "/admin/categories")

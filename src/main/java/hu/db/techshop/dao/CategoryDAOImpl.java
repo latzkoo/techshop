@@ -172,19 +172,22 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
     }
 
     @Override
-    public void delete(Category category) {
+    public int delete(Category category) {
         try {
             PreparedStatement statement = getConnection().prepareStatement(
                     "DELETE FROM TS_PRODUCT_CATEGORY WHERE ID=?");
 
             statement.setInt(1, category.getId());
-            statement.executeUpdate();
-
+            int deleted = statement.executeUpdate();
             statement.close();
+
+            return deleted;
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     private Category categoryMapper(ResultSet result) throws SQLException {

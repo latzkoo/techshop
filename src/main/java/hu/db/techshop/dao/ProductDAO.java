@@ -14,6 +14,6 @@ public interface ProductDAO {
     Product findById(int id, boolean isActive);
     Product findBySlug(String slug, boolean isActive);
     Product save(Product product);
-    void delete(Product product);
+    int delete(Product product);
 
 }
