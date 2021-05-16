@@ -133,16 +133,14 @@ public class CategoryDAOImpl extends JdbcDaoSupport implements CategoryDAO {
             // Insert
             if (category.getId() <= 0) {
                 final String SQL = "INSERT INTO TS_PRODUCT_CATEGORY (ID, CATEGORYNAME, SLUG, ACTIVE) " +
-                        "VALUES (TS_PRODUCT_CATEGORY_SEQ.nextval,?,?,?,?)";
+                        "VALUES (TS_PRODUCT_CATEGORY_SEQ.nextval,?,?,?)";
 
                 KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbcTemplate.update(connection -> {
                     PreparedStatement statement = connection.prepareStatement(SQL, new String[] {"ID"});
                     statement.setString(1, category.getCategoryName());
                     statement.setString(2, category.getSlug());
-
-                    if (category.isActive()) statement.setInt(4, 1);
-                    else statement.setNull(4, Types.INTEGER);
+                    statement.setInt(3, 1);
 
                     return statement;
                 }, keyHolder);

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Admin - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/admin/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+<header th:replace="admin/fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="content my-5">
+        <div class="container m-auto">
+            <div class="row">
+                <div class="col-12 p-0"><h3><a href="/admin/categories/">Termékkategóriák</a> ›
+                    <span class="small" th:text="${category.getId() > 0 ? 'módosítás' : 'új hozzáadása'}"></span></h3></div>
+            </div>
+
+            <!--/*@thymesVar id="category" type="hu.db.techshop.model.Category"*/-->
+            <form th:action="${'/admin/categories'}" method="post" autocomplete="off"
+                  enctype="multipart/form-data" th:object="${category}">
+                <input type="hidden" name="id" th:value="${category.getId()}" th:if="${category != null && category.getId() > 0}" />
+
+                <div class="container bg-white rounded shadow-sm p-3">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Adatok</div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="categoryName">Megnevezés</label>
+                                    <input type="text" class="form-control" id="categoryName" name="categoryName" required="required"
+                                           th:value="${category.getId() > 0 ? category.getCategoryName() : ''}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('categoryName')}"
+                                          th:errors="*{categoryName}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 p-0 px-md-2 form-buttons">
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pr-2 px-md-2">
+                        <button type="submit" class="btn btn-primary form-main-button btn-block px-4">
+                            <span class="spinner-grow spinner-grow-sm spinner-small" role="status" aria-hidden="true"></span>
+                        <span th:text="${category.getId() > 0 ? 'Módosítás' : 'Hozzáadás'}"></span></button>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pl-2 px-md-2">
+                        <a href="/admin/categories/">
+                            <button type="button" class="btn btn-secondary form-main-button btn-block px-4">Mégsem</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="admin/fragments/footer :: footer"></footer>
+<script th:src="@{/admin/js/vendor.js}"></script>
+<script th:src="@{/admin/js/app.js}"></script>
+</body>
+</html>
