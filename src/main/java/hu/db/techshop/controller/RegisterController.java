@@ -1,5 +1,6 @@
 package hu.db.techshop.controller;
 
+import hu.db.techshop.dao.CategoryDAO;
 import hu.db.techshop.dao.UserDAO;
 import hu.db.techshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,15 @@ import javax.validation.Valid;
 public class RegisterController {
 
     @Autowired
+    CategoryDAO categoryDAO;
+
+    @Autowired
     UserDAO userDAO;
 
     @GetMapping(value = "/regisztracio")
     public String index(Model model, HttpServletRequest request, User user) {
+        model.addAttribute("categoryList", categoryDAO.findAll());
+
         return "register";
     }
 

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Admin - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/admin/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+<header th:replace="admin/fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="content my-5">
+        <div class="container m-auto">
+            <div class="row">
+                <div class="col-12 p-0"><h3><a href="/admin/products/">Termékek</a> ›
+                    <span class="small" th:text="${product.getId() > 0 ? 'módosítás' : 'új hozzáadása'}"></span></h3></div>
+            </div>
+
+            <!--/*@thymesVar id="product" type="hu.db.techshop.model.Product"*/-->
+            <form th:action="${'/admin/products'}"
+                  method="post" autocomplete="off" enctype="multipart/form-data" th:object="${product}">
+                <input type="hidden" name="id" th:value="${product.getId()}" th:if="${product != null && product.getId() > 0}" />
+
+                <div class="container bg-white rounded shadow-sm p-3">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Adatok</div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="productName">Megnevezés</label>
+                                    <input type="text" class="form-control" id="productName" name="productName" required="required"
+                                           th:value="${product.getId() > 0 ? product.getProductName() : ''}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('productName')}"
+                                          th:errors="*{productName}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="categoryId">Kategória</label>
+                                    <select class="form-control" name="categoryId" id="categoryId" required="required">
+                                        <option value="" th:if="${product.getId() == 0}">Válasszon!</option>
+                                        <option th:each="category, i : ${categories}" th:value="${category.getId()}"
+                                                th:text="${category.getCategoryName()}"
+                                                th:selected="${product.getId() > 0 && product.getCategoryId() == category.getId()}"></option>
+                                    </select>
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('categoryId')}"
+                                          th:errors="*{categoryId}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-3">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="productNumber">Cikkszám</label>
+                                    <input type="text" class="form-control" id="productNumber" name="productNumber" required="required"
+                                           th:value="${product.getId() > 0 ? product.getProductNumber() : ''}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('productNumber')}"
+                                          th:errors="*{productNumber}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-3 px-2">
+                                    <label for="price">Bruttó ár</label>
+                                    <input type="number" class="form-control" id="price" name="price" required="required"
+                                           th:value="${product.getId() > 0 ? product.getPrice() : ''}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('price')}"
+                                          th:errors="*{price}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-3 px-2">
+                                    <label for="vat">ÁFA tartalom</label>
+                                    <input type="text" class="form-control numeric" id="vat" name="vat" required="required"
+                                           th:value="${product.getId() > 0 ? product.getVat() : '0.27'}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('vat')}"
+                                          th:errors="*{vat}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 px-2">
+                                    <label for="shortDescription">Rövid leírás</label>
+                                    <textarea class="form-control editor" id="shortDescription" name="shortDescription" maxlength="255" rows="5"
+                                              th:utext="${product.getId() > 0 ? product.getShortDescription() : ''}"></textarea>
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shortDescription')}"
+                                          th:errors="*{shortDescription}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 px-2">
+                                    <label for="description">Hosszú leírás</label>
+                                    <textarea class="form-control editor2" id="description" name="description" rows="5"
+                                              th:utext="${product.getId() > 0 ? product.getDescription() : ''}"></textarea>
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('description')}"
+                                          th:errors="*{description}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row py-3">
+                        <div class="form-row">
+                            <th:block th:if="${(product.getId() > 0 && product.getImage() != null)}">
+                                <div class="col-12 col-sm-4">
+                                    <img th:src="'/uploads/products/thumbs/' + ${product.getImage()}" class="img-thumbnail" />
+                                </div>
+                                <div class="col-12 col-sm-8 pl-sm-3">
+                                    <div class="form-group">
+                                        <label for="file">Kép cseréje</label>
+                                        <input type="file" class="form-control-file" id="file" name="file" accept=".jpg, .jpeg" />
+                                    </div>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${(product.getId() == 0 || (product.getId() > 0 && product.getImage() == null))}">
+                                <div class="form-group col-12 px-2">
+                                    <label for="file">Kép</label>
+                                    <input type="file" class="form-control-file" id="file"
+                                           name="file" required="required" accept=".jpg, .jpeg" />
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 p-0 px-md-2 form-buttons">
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pr-2 px-md-2">
+                        <button type="submit" class="btn btn-primary form-main-button btn-block px-4">
+                            <span class="spinner-grow spinner-grow-sm spinner-small" role="status" aria-hidden="true"></span>
+                        <span th:text="${product.getId() > 0 ? 'Módosítás' : 'Hozzáadás'}"></span></button>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pl-2 px-md-2">
+                        <a href="/admin/products/">
+                            <button type="button" class="btn btn-secondary form-main-button btn-block px-4">Mégsem</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="admin/fragments/footer :: footer"></footer>
+<script th:src="@{/admin/js/vendor.js}"></script>
+<script th:src="@{/admin/js/app.js}"></script>
+</body>
+</html>

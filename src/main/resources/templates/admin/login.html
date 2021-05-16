@@ -28,7 +28,8 @@
                             <input type="password" class="form-control" id="passwd" name="passwd" required="required" />
                         </div>
 
-                        <button class="btn btn-primary btn-register btn-lg btn-block mt-4" type="submit">Belépés</button>
+                        <button class="btn btn-primary btn-register btn-lg btn-block mt-4" type="submit">
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Belépés</button>
                         <div class="text-danger pt-3 text-center"
                              th:if="${#request.getParameter('error') != null}">Hibás e-mail cím vagy jelszó!</div>
                     </div>

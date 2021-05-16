@@ -1,6 +1,7 @@
 package hu.db.techshop.model;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -9,8 +10,8 @@ public class Product implements Serializable {
 
     private int id;
 
-    @NotEmpty(message = "A mező kitöltése kötelező!")
-    private int categoryId;
+    @NotNull(message = "A mező kitöltése kötelező!")
+    private Integer categoryId;
 
     @NotEmpty(message = "A mező kitöltése kötelező!")
     private String productNumber;
@@ -18,7 +19,6 @@ public class Product implements Serializable {
     @NotEmpty(message = "A mező kitöltése kötelező!")
     private String productName;
 
-    @NotEmpty(message = "A mező kitöltése kötelező!")
     private String slug;
 
     @NotEmpty(message = "A mező kitöltése kötelező!")
@@ -26,13 +26,12 @@ public class Product implements Serializable {
 
     private String description;
 
-    @NotEmpty(message = "A mező kitöltése kötelező!")
-    private int price;
+    @NotNull(message = "A mező kitöltése kötelező!")
+    private Integer price;
 
-    @NotEmpty(message = "A mező kitöltése kötelező!")
-    private double vat;
+    @NotNull(message = "A mező kitöltése kötelező!")
+    private Double vat;
 
-    @NotEmpty(message = "A mező kitöltése kötelező!")
     private String image;
 
     private boolean active;
@@ -51,11 +50,11 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -99,19 +98,19 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public double getVat() {
+    public Double getVat() {
         return vat;
     }
 
-    public void setVat(double vat) {
+    public void setVat(Double vat) {
         this.vat = vat;
     }
 

@@ -22,7 +22,7 @@
     <div class="container py-5">
         <div class="row my-5">
             <div class="col-6 py-5 mx-auto shadow-lg">
-                <!--/*@thymesVar id="user" type="hu.db.techshop.User"*/-->
+                <!--/*@thymesVar id="user" type="hu.db.techshop.model.User"*/-->
                 <form th:action="@{/regisztracio}" method="post" th:object="${user}">
                     <div class="row mb-3">
                         <div class="col-6">
@@ -69,7 +69,8 @@
 
                     <div class="row pt-2">
                         <div class="col-12">
-                            <button class="btn btn-primary btn-lg rounded w-100">Regisztrálok</button>
+                            <button class="btn btn-primary btn-lg rounded w-100" type="submit">
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Regisztrálok</button>
                         </div>
                     </div>
                 </form>

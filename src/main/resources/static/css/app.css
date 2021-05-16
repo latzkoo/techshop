@@ -87,3 +87,24 @@ input.form-control {
 .error {
     color: #b21f2d;
 }
+
+button {
+    position: relative;
+}
+button .spinner-grow,
+button .spinner-border {
+    display: none;
+    position: absolute;
+    top: 13px;
+    left: 15px;
+    margin-right: 10px;
+}
+button.spinner-small {
+    top: 8px;
+    margin-right: 5px;
+}
+
+button[disabled] .spinner-grow,
+button[disabled] .spinner-border {
+    display: inline-block;
+}

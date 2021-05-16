@@ -1,5 +1,6 @@
 package hu.db.techshop.controller;
 
+import hu.db.techshop.dao.CategoryDAO;
 import hu.db.techshop.dao.UserDAO;
 import hu.db.techshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     @Autowired
+    CategoryDAO categoryDAO;
+
+    @Autowired
     private UserDAO userDAO;
 
     @GetMapping(value = "/belepes")
     public String index(Model model, HttpServletRequest request) {
+        model.addAttribute("categoryList", categoryDAO.findAll());
+
         return "login";
     }
 

@@ -1,41 +1,52 @@
+const config = {
+    toolbar: {
+        items: [
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'indent',
+            'outdent',
+            '|',
+            'undo',
+            'redo'
+        ]
+    },
+    language: 'hu',
+    image: {
+        toolbar: [
+            'imageTextAlternative',
+            'imageStyle:full',
+            'imageStyle:side'
+        ]
+    },
+    table: {
+        contentToolbar: [
+            'tableColumn',
+            'tableRow',
+            'mergeTableCells'
+        ]
+    },
+    licenseKey: '',
+};
+
 $(window).bind("load", function () {
 
     $(".numeric").numeric();
 
     if ($(".editor").is(":visible")) {
-        ClassicEditor.create(document.querySelector('.editor'), {
-            toolbar: {
-                items: [
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'indent',
-                    'outdent',
-                    '|',
-                    'undo',
-                    'redo'
-                ]
-            },
-            language: 'hu',
-            image: {
-                toolbar: [
-                    'imageTextAlternative',
-                    'imageStyle:full',
-                    'imageStyle:side'
-                ]
-            },
-            table: {
-                contentToolbar: [
-                    'tableColumn',
-                    'tableRow',
-                    'mergeTableCells'
-                ]
-            },
-            licenseKey: '',
-        })
+        ClassicEditor.create(document.querySelector('.editor'), config)
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+            });
+    }
+
+    if ($(".editor2").is(":visible")) {
+        ClassicEditor.create(document.querySelector('.editor2'), config)
             .then(editor => {
                 window.editor = editor;
             })

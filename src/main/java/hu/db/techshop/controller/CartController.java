@@ -21,14 +21,14 @@ public class CartController {
 
     @PostMapping(value = "/kosar/add/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONResponse add(@PathVariable int productId, @RequestParam int qty, HttpServletRequest request) {
-        cart.add(productDAO.findById(productId), qty);
+        cart.add(productDAO.findById(productId, true), qty);
 
         return new JSONResponse("OK", "SUCCESS", Util.cartToMap(cart));
     }
 
     @PostMapping(value = "/kosar/update/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONResponse update(@PathVariable int productId, @RequestParam int qty, HttpServletRequest request) {
-        cart.update(productDAO.findById(productId), qty);
+        cart.update(productDAO.findById(productId, true), qty);
 
         return new JSONResponse("OK", "SUCCESS", Util.cartToMap(cart));
     }

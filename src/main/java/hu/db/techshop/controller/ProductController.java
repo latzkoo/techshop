@@ -25,7 +25,7 @@ public class ProductController {
     @GetMapping(value = "/termekek")
     public String index(@RequestParam(name = "sort", required = false) String sort,  Model model, HttpServletRequest request) {
         model.addAttribute("categoryList", categoryDAO.findAll());
-        model.addAttribute("productList", productDAO.findAll(sort));
+        model.addAttribute("productList", productDAO.findAll(sort, true));
 
         return "products/list";
     }
@@ -36,14 +36,18 @@ public class ProductController {
         Category category = categoryDAO.findBySlug(slug);
         model.addAttribute("categoryList", categoryDAO.findAll());
         model.addAttribute("category", category);
-        model.addAttribute("productList", productDAO.findAll(sort, category.getId()));
+        model.addAttribute("productList", productDAO.findAll(sort, category.getId(), true));
 
         return "products/list";
     }
 
     @GetMapping(value = "/termekek/{category}/{slug}")
     public String get(@PathVariable String category, @PathVariable String slug, Model model, HttpServletRequest request) {
-        Product product = productDAO.findBySlug(slug);
+        Product product = productDAO.findBySlug(slug, true);
+
+        if (product == null) {
+            return "404";
+        }
 
         model.addAttribute("category", categoryDAO.findBySlug(category));
         model.addAttribute("product", product);
@@ -57,7 +61,7 @@ public class ProductController {
                          @RequestParam(name = "q", required = false) String keyword,
                          Model model, HttpServletRequest request) {
         if (keyword != null && !keyword.equals("")) {
-            model.addAttribute("productList", productDAO.findAll(sort, keyword));
+            model.addAttribute("productList", productDAO.findAll(sort, keyword, true));
         }
 
         return "products/search";
