@@ -10,7 +10,7 @@ public interface UserDAO {
     List<User> findAll(String keyword);
     User findById(int id);
     User save(User user);
-    void delete(User user);
+    int delete(User user);
     User getUserByEmailAndPassword(String email, String password, boolean checkAdmin);
 
 }

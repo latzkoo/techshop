@@ -26,8 +26,8 @@ public class MainController {
     public String index(Model model, HttpServletRequest request) {
         model.addAttribute("categoryList", categoryDAO.findAll());
 
-        model.addAttribute("freshestMobiles", productDAO.findFreshest(5));
-        model.addAttribute("freshestWatches", productDAO.findFreshest(8));
+        model.addAttribute("freshestWatches", productDAO.findFreshest(5));
+        model.addAttribute("freshestMobiles", productDAO.findFreshest(8));
 
         return "index";
     }

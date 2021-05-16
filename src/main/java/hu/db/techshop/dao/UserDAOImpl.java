@@ -76,7 +76,8 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
         try {
             // Insert
             if (user.getId() <= 0) {
-                final String SQL = "INSERT INTO TS_USER (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, ADMIN) VALUES (TS_USER_SEQ.nextval,?,?,?,?,?)";
+                final String SQL = "INSERT INTO TS_USER (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, ADMIN) " +
+                        "VALUES (TS_USER_SEQ.nextval,?,?,?,?,?)";
 
                 KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbcTemplate.update(connection -> {
@@ -99,12 +100,13 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
             // Update
             else {
                 PreparedStatement statement = getConnection().prepareStatement(
-                        "UPDATE TS_USER SET FIRSTNAME=?, LASTNAME=?, EMAIL=? WHERE ID=?");
+                        "UPDATE TS_USER SET FIRSTNAME=?, LASTNAME=?, EMAIL=?, ADMIN=? WHERE ID=?");
 
                 statement.setString(1, user.getFirstname());
                 statement.setString(2, user.getLastname());
                 statement.setString(3, user.getEmail());
-                statement.setInt(4, user.getId());
+                statement.setBoolean(4, user.isAdmin());
+                statement.setInt(5, user.getId());
 
                 statement.executeUpdate();
                 statement.close();
@@ -120,18 +122,21 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
     }
 
     @Override
-    public void delete(User user) {
+    public int delete(User user) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("DELETE FROM TS_USER WHERE ID=?");
 
             statement.setInt(1, user.getId());
-            statement.executeUpdate();
-
+            int deleted = statement.executeUpdate();
             statement.close();
+
+            return deleted;
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     private User userMapper(ResultSet result) throws SQLException {

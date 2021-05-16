@@ -11,8 +11,7 @@
                                 <th:block th:if="${type == 'new'}">
                                     <span class="new">Új termék</span>
                                 </th:block>
-                                <div class="image"><img th:src="'/uploads/products/thumbs/' + ${product.getImage()}"
-                                                        th:alt="${product.getProductName()}" /></div>
+                                <div class="image" th:style="${'background-image: url(/uploads/products/thumbs/' + product.getImage() + ')'}"></div>
                                 <div class="title" th:text="${product.getProductName()}"></div>
                                 <div class="price" th:text="${#numbers.formatInteger(product.getPrice(), 0, 'WHITESPACE') + ' Ft'}"></div></a>
                                 <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>

@@ -83,7 +83,11 @@ input.form-control {
 .content p {
     margin: 20px 0;
 }
-
+.validationError {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+}
 .error {
     color: #b21f2d;
 }

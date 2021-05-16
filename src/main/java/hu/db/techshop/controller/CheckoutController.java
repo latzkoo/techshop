@@ -1,5 +1,6 @@
 package hu.db.techshop.controller;
 
+import hu.db.techshop.dao.CategoryDAO;
 import hu.db.techshop.dao.PaymentMethodDAO;
 import hu.db.techshop.model.Cart;
 import hu.db.techshop.model.Order;
@@ -22,6 +23,9 @@ public class CheckoutController {
     Cart cart;
 
     @Autowired
+    CategoryDAO categoryDAO;
+
+    @Autowired
     PaymentMethodDAO paymentMethodDAO;
 
     @Autowired
@@ -35,6 +39,8 @@ public class CheckoutController {
             return "redirect:/kosar";
         }
 
+        model.addAttribute("categoryList", categoryDAO.findAll());
+
         return "cart";
     }
 
@@ -44,6 +50,7 @@ public class CheckoutController {
             return "redirect:/belepes";
         }
 
+        model.addAttribute("categoryList", categoryDAO.findAll());
         model.addAttribute("paymentMethods", paymentMethodDAO.findAll());
 
         return "checkout";

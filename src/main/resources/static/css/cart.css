@@ -34,6 +34,9 @@
 .cart .cart-item:last-child {
     border: none;
 }
+.cart .cart-item img {
+    width: 100%;
+}
 .cart .pc-row {
     float: right;
 }

@@ -34,6 +34,11 @@ public class ProductController {
     public String category(@RequestParam(name = "sort", required = false) String sort,
                            @PathVariable String slug, Model model, HttpServletRequest request) {
         Category category = categoryDAO.findBySlug(slug);
+
+        if (category == null) {
+            return "404";
+        }
+
         model.addAttribute("categoryList", categoryDAO.findAll());
         model.addAttribute("category", category);
         model.addAttribute("productList", productDAO.findAll(sort, category.getId(), true));
@@ -49,6 +54,7 @@ public class ProductController {
             return "404";
         }
 
+        model.addAttribute("categoryList", categoryDAO.findAll());
         model.addAttribute("category", categoryDAO.findBySlug(category));
         model.addAttribute("product", product);
         model.addAttribute("similar", productDAO.findSimilar(product));

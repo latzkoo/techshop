@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Admin - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/admin/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+<header th:replace="admin/fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="content my-5">
+        <div class="container m-auto">
+            <div class="row">
+                <div class="col-12 p-0"><h3><a href="/admin/users/">Felhasználók</a> ›
+                    <span class="small" th:text="${user.getId() > 0 ? 'módosítás' : 'új hozzáadása'}"></span></h3></div>
+            </div>
+
+            <!--/*@thymesVar id="user" type="hu.db.techshop.model.User"*/-->
+            <form th:action="${'/admin/users'}" method="post" autocomplete="off"
+                  enctype="multipart/form-data" th:object="${user}">
+                <input type="hidden" name="id" th:value="${user.getId()}" th:if="${user != null && user.getId() > 0}" />
+                <input type="hidden" name="terms" value="1" />
+
+                <div class="container bg-white rounded shadow-sm p-3">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Adatok</div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="lastname">Vezetéknév</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" required="required"
+                                           th:value="${user.getId() > 0 ? user.getLastname() : ''}" autocomplete="new-password" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('lastname')}"
+                                          th:errors="*{lastname}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="firstname">Keresztnév</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" required="required"
+                                           th:value="${user.getId() > 0 ? user.getFirstname() : ''}" autocomplete="new-password" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('firstname')}"
+                                          th:errors="*{firstname}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="email">E-mail cím</label>
+                                    <input type="email" class="form-control" id="email" name="email" required="required"
+                                           th:value="${user.getId() > 0 ? user.getEmail() : ''}" autocomplete="new-password" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('email')}"
+                                          th:errors="*{email}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="admin">Fióktípus</label>
+                                    <select class="form-control" name="admin" id="admin">
+                                        <option value="0">Felhasználó</option>
+                                        <option value="1" th:selected="${user.isAdmin()}">Adminisztrátor</option>
+                                    </select>
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('admin')}"
+                                          th:errors="*{admin}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" th:if="${user == null || (user != null && user.getId() == 0)}">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="password">Jelszó</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                           required="required" autocomplete="new-password" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('password')}"
+                                          th:errors="*{password}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="passwordConfirmation">Jelszó megerősítése</label>
+                                    <input type="password" class="form-control" id="passwordConfirmation"
+                                           name="passwordConfirmation" required="required" autocomplete="new-password" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('passwordConfirmation')}"
+                                          th:errors="*{passwordConfirmation}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 p-0 px-md-2 form-buttons">
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pr-2 px-md-2">
+                        <button type="submit" class="btn btn-primary form-main-button btn-block px-4">
+                            <span class="spinner-grow spinner-grow-sm spinner-small" role="status" aria-hidden="true"></span>
+                        <span th:text="${user.getId() > 0 ? 'Módosítás' : 'Hozzáadás'}"></span></button>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pl-2 px-md-2">
+                        <a href="/admin/users/">
+                            <button type="button" class="btn btn-secondary form-main-button btn-block px-4">Mégsem</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="admin/fragments/footer :: footer"></footer>
+<script th:src="@{/admin/js/vendor.js}"></script>
+<script th:src="@{/admin/js/app.js}"></script>
+</body>
+</html>
