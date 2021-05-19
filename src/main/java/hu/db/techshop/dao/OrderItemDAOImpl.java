@@ -32,7 +32,12 @@ public class OrderItemDAOImpl extends JdbcDaoSupport implements OrderItemDAO {
 
     @Override
     public List<OrderItem> findAll(int orderId) {
-        String query = "SELECT * FROM TS_ORDER_ITEM WHERE ORDERID=? ORDER BY ID";
+        String query = "SELECT I.*, P.PRODUCTNUMBER, P.PRODUCTNAME " +
+                "FROM TS_ORDER_ITEM I " +
+                "LEFT JOIN TS_PRODUCT P " +
+                "ON I.PRODUCTID=P.ID " +
+                "WHERE I.ORDERID=? " +
+                "ORDER BY I.ID";
         return jdbcTemplate.query(query, preparedStatement -> {
             preparedStatement.setInt(1, orderId);
         }, (row, i) -> orderItemMapper(row));
@@ -41,7 +46,11 @@ public class OrderItemDAOImpl extends JdbcDaoSupport implements OrderItemDAO {
     @Override
     public OrderItem findById(int id) {
         try {
-            String query = "SELECT * FROM TS_ORDER WHERE ID=?";
+            String query = "SELECT I.*, P.PRODUCTNUMBER, P.PRODUCTNAME " +
+                    "FROM TS_ORDER_ITEM I " +
+                    "LEFT JOIN TS_PRODUCT P " +
+                    "ON I.PRODUCTID=P.ID " +
+                    "WHERE I.ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -135,6 +144,8 @@ public class OrderItemDAOImpl extends JdbcDaoSupport implements OrderItemDAO {
         orderItem.setId(result.getInt("id"));
         orderItem.setOrderId(result.getInt("orderid"));
         orderItem.setProductId(result.getInt("productid"));
+        orderItem.setProductNumber(result.getString("productnumber"));
+        orderItem.setProductName(result.getString("productname"));
         orderItem.setPrice(result.getInt("price"));
         orderItem.setQty(result.getInt("qty"));
 

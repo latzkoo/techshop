@@ -170,13 +170,13 @@ $(window).bind("load", function () {
         });
     });
 
-    // Show recipe
+    // Show order
     $(document).on("click", ".button-show", function() {
         let href = $(this).data("href");
 
         $.ajax({
             url: href,
-            type: 'get',
+            type: 'GET',
             headers: {},
             data: {},
             dataType: 'text',
@@ -184,7 +184,7 @@ $(window).bind("load", function () {
             },
             success: function (data) {
                 $("body").prepend(data);
-                $("#showRecipeModal").modal({
+                $("#showOrderModal").modal({
                     show: true,
                     keyboard: true
                 });

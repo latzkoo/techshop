@@ -5,6 +5,8 @@ public class OrderItem {
     private int id;
     private int orderId;
     private int productId;
+    private String productNumber;
+    private String productName;
     private int price;
     private int qty;
 
@@ -47,6 +49,22 @@ public class OrderItem {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getProductNumber() {
+        return productNumber;
+    }
+
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public int getPrice() {

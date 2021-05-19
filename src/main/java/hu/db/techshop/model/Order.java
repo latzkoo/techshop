@@ -4,6 +4,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Order {
 
@@ -53,6 +54,7 @@ public class Order {
     private String firstname;
     private String lastname;
     private int productCount;
+    private List<OrderItem> items;
 
     public Order() {
     }
@@ -215,5 +217,13 @@ public class Order {
 
     public void setProductCount(int productCount) {
         this.productCount = productCount;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }

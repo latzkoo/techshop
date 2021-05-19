@@ -1,12 +1,16 @@
 package hu.db.techshop.controller.admin;
 
 import hu.db.techshop.dao.OrderDAO;
+import hu.db.techshop.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,6 +45,17 @@ public class AdminOrderController {
         orderDAO.delete(id);
 
         return "admin/orders/list";
+    }
+
+    @GetMapping(value = "/admin/orders/show/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView addComment(@PathVariable int id, Model model, HttpServletRequest request) {
+        if (request.getSession().getAttribute("USERID") == null) {
+            return null;
+        }
+
+        model.addAttribute("order", orderDAO.findById(id));
+
+        return new ModelAndView("/admin/orders/order :: order");
     }
 
 }

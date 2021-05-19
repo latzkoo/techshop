@@ -18,15 +18,6 @@
         <div class="container m-auto">
             <div class="row mb-2">
                 <div class="col-6 p-0"><h3>Megrendelések</h3></div>
-                <div class="col-6 p-0">
-                    <div class="button-add-new">
-                        <a href="/admin/orders/create">
-                            <button class="btn btn-primary btn-sm">
-                                <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-plus mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                </svg>Új megrendelés</button></a>
-                    </div>
-                </div>
             </div>
 
             <div class="container bg-white rounded shadow-sm px-0 py-3 mb-3">
@@ -96,6 +87,12 @@
                         <td class="fix200" th:text="${#dates.format(order.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></td>
                         <td>
                             <div class="operations">
+                                <button type="button" class="btn btn-operations-small btn-info ml-1 button-show"
+                                        title="Megtekintés" th:attr="data-href=${'/admin/orders/show/' + order.getId()}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                </button>
                                 <a th:href="'/admin/orders/edit?id=' + ${order.getId()}">
                                 <button type="button" class="btn btn-operations-small btn-secondary ml-1" title="Szerkesztés">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

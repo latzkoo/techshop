@@ -1,0 +1,88 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="order">
+    <div class="modal" id="showOrderModal" tabindex="-1" aria-labelledby="showOrderModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span th:text="${order.getId() + '/2021 számú megrendelés adatai'}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 px-0">
+                            <h5 class="font-weight-bold">Szállítási adatok</h5>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Név: </strong><span th:text="${order.getShippingName()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Cím: </strong><span th:text="${order.getShippingZip() + ' ' + order.getShippingCity() + ', ' + order.getShippingStreet()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Telefonszám: </strong><span th:text="${order.getShippingPhone()}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 px-0">
+                            <h5 class="font-weight-bold">Számlázási adatok</h5>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Név: </strong><span th:text="${order.getBillingName()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Cím: </strong><span th:text="${order.getBillingZip() + ' ' + order.getBillingCity() + ', ' + order.getBillingStreet()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Adószám: </strong><span th:text="${order.getBillingTaxNumber() != null ? order.getBillingTaxNumber() : '-'}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 px-0">
+                            <h5 class="font-weight-bold">Fizetési mód</h5>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <span th:text="${order.getPaymentMethod()}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12 px-0">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr class="row">
+                                    <th scope="col" class="col-6">Terméknév</th>
+                                    <th scope="col" class="col-3 text-right">Mennyiség</th>
+                                    <th scope="col" class="col-3 text-right">Bruttó ár</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="row" th:each="product, i : ${order.getItems()}">
+                                        <td class="col-6" th:text="${product.getProductName()}"></td>
+                                        <td class="col-3 text-right" th:text="${product.getQty() + ' db'}"></td>
+                                        <td class="col-3 text-right" th:text="${#numbers.formatInteger((product.getPrice() * product.getQty()), 0, 'WHITESPACE') + ' Ft'}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

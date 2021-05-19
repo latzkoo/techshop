@@ -25,6 +25,9 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    OrderItemDAO orderItemDAO;
+
     @PostConstruct
     private void initialize() {
         setDataSource(dataSource);
@@ -40,7 +43,7 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
                 "LEFT JOIN TS_PAYMENT_METHOD M " +
                 "ON O.PAYMENTMETHODID=M.ID " +
                 "ORDER BY O.CREATEDAT DESC";
-        return jdbcTemplate.query(query, (row, i) -> orderMapper(row));
+        return jdbcTemplate.query(query, (row, i) -> orderMapper(row, false));
     }
 
     @Override
@@ -62,19 +65,27 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         return jdbcTemplate.query(query, preparedStatement -> {
             preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
             preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
-        }, (row, i) -> orderMapper(row));
+        }, (row, i) -> orderMapper(row, false));
     }
 
     @Override
     public Order findById(int id) {
         try {
-            String query = "SELECT * FROM TS_ORDER WHERE ID=?";
+            String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+                    "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                    "FROM TS_ORDER O " +
+                    "LEFT JOIN TS_PAYMENT_METHOD M " +
+                    "ON O.PAYMENTMETHODID=M.ID " +
+                    "LEFT JOIN TS_USER U " +
+                    "ON O.USERID=U.ID " +
+                    "WHERE O.ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Order order = orderMapper(result);
+                Order order = orderMapper(result, true);
+                order.setItems(orderItemDAO.findAll(id));
                 statement.close();
 
                 return order;
@@ -167,15 +178,30 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         }
     }
 
-    private Order orderMapper(ResultSet result) throws SQLException {
+    private Order orderMapper(ResultSet result, boolean entity) throws SQLException {
         Order order = new Order();
         order.setId(result.getInt("id"));
         order.setPaymentMethodId(result.getInt("paymentmethodid"));
         order.setCreatedAt(result.getTimestamp("createdat"));
         order.setPaymentMethod(result.getString("paymentmethod"));
-        order.setFirstname(result.getString("firstname"));
-        order.setLastname(result.getString("lastname"));
-        order.setProductCount(result.getInt("count"));
+
+        if (entity) {
+            order.setShippingName(result.getString("shipname"));
+            order.setShippingZip(result.getInt("shipzip"));
+            order.setShippingCity(result.getString("shipcity"));
+            order.setShippingStreet(result.getString("shipstreet"));
+            order.setShippingPhone(result.getString("shipphone"));
+            order.setBillingName(result.getString("billname"));
+            order.setBillingZip(result.getInt("billzip"));
+            order.setBillingCity(result.getString("billcity"));
+            order.setBillingStreet(result.getString("billstreet"));
+            order.setBillingTaxNumber(result.getString("billtaxnum"));
+        }
+        else {
+            order.setFirstname(result.getString("firstname"));
+            order.setLastname(result.getString("lastname"));
+            order.setProductCount(result.getInt("count"));
+        }
 
         return order;
     }
