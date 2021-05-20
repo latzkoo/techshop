@@ -77,6 +77,13 @@
                                         <td class="col-3 text-right" th:text="${#numbers.formatInteger((product.getPrice() * product.getQty()), 0, 'WHITESPACE') + ' Ft'}"></td>
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                <tr class="row">
+                                    <th scope="col" class="col-6">Összesen</th>
+                                    <th scope="col" class="col-3 text-right" th:text="${order.getProductCount()} + ' db'"></th>
+                                    <th scope="col" class="col-3 text-right" th:text="${#numbers.formatInteger((order.getOrderValue()), 0, 'WHITESPACE') + ' Ft'}"></th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

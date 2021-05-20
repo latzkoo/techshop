@@ -78,7 +78,7 @@
                                                 <tr class="row">
                                                     <th scope="col" class="col-6">Összesen</th>
                                                     <th scope="col" class="col-3 text-right" th:text="${order.getProductCount()} + ' db'"></th>
-                                                    <th scope="col" class="col-3 text-right" th:text="${#numbers.formatInteger((order.getOrdetValue()), 0, 'WHITESPACE') + ' Ft'}"></th>
+                                                    <th scope="col" class="col-3 text-right" th:text="${#numbers.formatInteger((order.getOrderValue()), 0, 'WHITESPACE') + ' Ft'}"></th>
                                                 </tr>
                                                 </tfoot>
                                             </table>

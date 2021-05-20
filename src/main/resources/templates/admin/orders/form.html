@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="hu" class="h-100" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Admin - TechShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/admin/css/app.css}" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100 bg-light">
+<header th:replace="admin/fragments/header :: header"></header>
+
+<main role="main" class="flex-shrink-0">
+    <section class="content my-5">
+        <div class="container m-auto">
+            <div class="row">
+                <div class="col-12 p-0"><h3><a href="/admin/orders/">Megrendelések</a> ›
+                    <span class="small" th:text="${order.getId() > 0 ? 'módosítás' : 'új hozzáadása'}"></span></h3></div>
+            </div>
+
+            <!--/*@thymesVar id="order" type="hu.db.techshop.model.Order"*/-->
+            <form th:action="@{/admin/orders}"
+                  method="post" autocomplete="off" enctype="multipart/form-data" th:object="${order}">
+                <input type="hidden" name="id" th:value="${order.getId()}" th:if="${order != null && order.getId() > 0}" />
+                <input type="hidden" name="userid" th:value="${order.getUserId()}" th:if="${order != null && order.getId() > 0}" />
+                <input type="hidden" name="terms" value="1" />
+
+                <div class="container bg-white rounded shadow-sm p-3">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Szállítási adatok</div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="shippingName">Név</label>
+                                    <input type="text" class="form-control" id="shippingName" th:field="*{shippingName}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shippingName')}"
+                                          th:errors="*{shippingName}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="paymentMethodId">Fizetési mód</label>
+                                    <select class="form-control" name="paymentMethodId" id="paymentMethodId" required="required">
+                                        <option th:each="paymentMethod, i : ${paymentMethods}" th:value="${paymentMethod.getId()}"
+                                                th:text="${paymentMethod.getPaymentMethod()}"
+                                                th:selected="${order.getPaymentMethodId() > 0 &&
+                                                order.getPaymentMethodId() == paymentMethod.getId()}"></option>
+                                    </select>
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('paymentMethodId')}"
+                                          th:errors="*{paymentMethodId}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="shippingZip">Irányítószám</label>
+                                    <input type="text" class="form-control numeric" id="shippingZip" th:field="*{shippingZip}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shippingZip')}"
+                                          th:errors="*{shippingZip}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="shippingCity">Település</label>
+                                    <input type="text" class="form-control" id="shippingCity" th:field="*{shippingCity}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shippingCity')}"
+                                          th:errors="*{shippingCity}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="shippingStreet">Utca, házszám</label>
+                                    <input type="text" class="form-control numeric" id="shippingStreet" th:field="*{shippingStreet}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shippingStreet')}"
+                                          th:errors="*{shippingStreet}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="shippingPhone">Telefonszám</label>
+                                    <input type="text" class="form-control" id="shippingPhone" th:field="*{shippingPhone}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('shippingPhone')}"
+                                          th:errors="*{shippingPhone}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Számlázási adatok</div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="billingName">Név</label>
+                                    <input type="text" class="form-control" id="billingName" th:field="*{billingName}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('billingName')}"
+                                          th:errors="*{billingName}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="billingZip">Irányítószám</label>
+                                    <input type="text" class="form-control numeric" id="billingZip" th:field="*{billingZip}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('billingZip')}"
+                                          th:errors="*{billingZip}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="billingCity">Település</label>
+                                    <input type="text" class="form-control" id="billingCity" th:field="*{billingCity}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('billingCity')}"
+                                          th:errors="*{billingCity}"></span>
+                                </div>
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="billingStreet">Utca, házszám</label>
+                                    <input type="text" class="form-control numeric" id="billingStreet" th:field="*{billingStreet}" required="required" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('billingStreet')}"
+                                          th:errors="*{billingStreet}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 py-2 px-0">
+                            <div class="form-row">
+                                <div class="form-group col-12 col-md-6 px-2">
+                                    <label for="billingTaxNumber">Adószám</label>
+                                    <input type="text" class="form-control" id="billingTaxNumber" th:field="*{billingTaxNumber}" />
+                                    <span class="col-red mt-1 text-danger" th:if="${#fields.hasErrors('billingTaxNumber')}"
+                                          th:errors="*{billingTaxNumber}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 p-0 px-md-2 form-buttons">
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pr-2 px-md-2">
+                        <button type="submit" class="btn btn-primary form-main-button btn-block px-4">
+                            <span class="spinner-grow spinner-grow-sm spinner-small" role="status" aria-hidden="true"></span>
+                        <span th:text="${order.getId() > 0 ? 'Módosítás' : 'Hozzáadás'}"></span></button>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 p-0 pl-2 px-md-2">
+                        <a href="/admin/orders/">
+                            <button type="button" class="btn btn-secondary form-main-button btn-block px-4">Mégsem</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="admin/fragments/footer :: footer"></footer>
+<script th:src="@{/admin/js/vendor.js}"></script>
+<script th:src="@{/admin/js/app.js}"></script>
+</body>
+</html>

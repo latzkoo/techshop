@@ -1,0 +1,115 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="invoice">
+    <div class="modal" id="showInvoiceModal" tabindex="-1" aria-labelledby="showInvoiceModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <span th:text="${invoice.getId() + '/2021 számla'}"></span>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 px-0">
+                            <h5 class="font-weight-bold">Szállító</h5>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Név: </strong><span th:text="${invoice.getSupplierName()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Cím: </strong><span th:text="${invoice.getSupplierZip() + ' ' + invoice.getSupplierCity() + ', ' + invoice.getSupplierStreet()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Telefon: </strong><span th:text="${invoice.getSupplierPhone()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Adószám: </strong><span th:text="${invoice.getSupplierVat()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Bankszámlaszám: </strong><span th:text="${invoice.getSupplierBankAccount()}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 px-0">
+                            <h5 class="font-weight-bold">Vevő</h5>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Név: </strong><span th:text="${invoice.getCustomerName()}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 px-0">
+                                    <strong>Cím: </strong><span th:text="${invoice.getCustomerZip() + ' ' + invoice.getCustomerCity() + ', ' + invoice.getCustomerStreet()}"></span>
+                                </div>
+                            </div>
+                            <div class="row" th:if="${invoice.getCustomerVat() != null}">
+                                <div class="col-12 px-0">
+                                    <strong>Adószám: </strong><span th:text="${invoice.getCustomerVat()}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 col-md-3 px-0 font-weight-bold">Számla kelte</div>
+                        <div class="col-12 col-md-3 px-0 font-weight-bold">Teljesítés ideje</div>
+                        <div class="col-12 col-md-3 px-0 font-weight-bold">Esedékes</div>
+                        <div class="col-12 col-md-3 px-0 font-weight-bold">Fizetési mód</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3 px-0" th:text="${#dates.format(invoice.getInvoiceDate(), 'yyyy-MM-dd')}"></div>
+                        <div class="col-12 col-md-3 px-0" th:text="${#dates.format(invoice.getDeliveryDate(), 'yyyy-MM-dd')}"></div>
+                        <div class="col-12 col-md-3 px-0" th:text="${#dates.format(invoice.getDueDate(), 'yyyy-MM-dd')}"></div>
+                        <div class="col-12 col-md-3 px-0" th:text="${invoice.getPaymentMethod()}"></div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 px-0">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr class="row">
+                                    <th scope="col" class="col-4">Terméknév</th>
+                                    <th scope="col" class="col-2">Cikkszám</th>
+                                    <th scope="col" class="col-2 text-right">Mennyiség</th>
+                                    <th scope="col" class="col-2 text-right">ÁFA</th>
+                                    <th scope="col" class="col-2 text-right">Bruttó ár</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="row" th:each="product, i : ${invoice.getItems()}">
+                                        <td class="col-4" th:text="${product.getProductName()}"></td>
+                                        <td class="col-2" th:text="${product.getProductNumber()}"></td>
+                                        <td class="col-2 text-right" th:text="${product.getQty() + ' db'}"></td>
+                                        <td class="col-2 text-right" th:text="${#numbers.formatInteger((product.getVat() * 100), 0, 'WHITESPACE') + ' %'}"></td>
+                                        <td class="col-2 text-right" th:text="${#numbers.formatInteger((product.getPrice() * product.getQty()), 0, 'WHITESPACE') + ' Ft'}"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr class="row">
+                                    <th scope="col" class="col-6">Összesen</th>
+                                    <th scope="col" class="col-3 text-right" th:text="${invoice.getItemCount()} + ' db'"></th>
+                                    <th scope="col" class="col-3 text-right" th:text="${#numbers.formatInteger((invoice.getInvoiceValue()), 0, 'WHITESPACE') + ' Ft'}"></th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

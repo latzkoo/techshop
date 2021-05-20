@@ -34,7 +34,6 @@
                         <button class="btn btn-primary rounded addToCart" th:attr="data-id=${product.getId()}">Kosárba tesz</button>
                     </div>
                 </div>
-                <div class="favourite">Kívánságlistára</div>
             </div>
         </div>
         <th:block th:if="${product.getDescription() != null && product.getDescription() != ''}">

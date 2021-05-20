@@ -107,7 +107,8 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     public Order findById(int id) {
         try {
             String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, S.STATUS, " +
-                    "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                    "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
+                    "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
                     "FROM TS_ORDER O " +
                     "LEFT JOIN TS_PAYMENT_METHOD M " +
                     "ON O.PAYMENTMETHODID=M.ID " +
@@ -238,6 +239,8 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         order.setPaymentMethod(result.getString("paymentmethod"));
         order.setStatusId(result.getInt("statusid"));
         order.setStatus(result.getString("status"));
+        order.setProductCount(result.getInt("count"));
+        order.setOrderValue(result.getInt("value"));
 
         if (entity) {
             order.setShippingName(result.getString("shipname"));
@@ -254,8 +257,6 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         else {
             order.setFirstname(result.getString("firstname"));
             order.setLastname(result.getString("lastname"));
-            order.setProductCount(result.getInt("count"));
-            order.setOrdetValue(result.getInt("value"));
         }
 
         if (withItems) {

@@ -1,6 +1,7 @@
 package hu.db.techshop.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Invoice {
 
@@ -27,6 +28,7 @@ public class Invoice {
     private String paymentMethod;
     private int itemCount;
     private int invoiceValue;
+    private List<InvoiceItem> items;
 
     public Invoice() {
     }
@@ -213,5 +215,13 @@ public class Invoice {
 
     public void setInvoiceValue(int invoiceValue) {
         this.invoiceValue = invoiceValue;
+    }
+
+    public List<InvoiceItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<InvoiceItem> items) {
+        this.items = items;
     }
 }

@@ -104,6 +104,28 @@ $(window).bind("load", function () {
         });
     });
 
+    // Show invoice
+    $(document).on("click", ".button-show-invoice", function() {
+        let href = $(this).data("href");
+
+        $.ajax({
+            url: href,
+            type: 'GET',
+            headers: {},
+            data: {},
+            dataType: 'text',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                $("body").prepend(data);
+                $("#showInvoiceModal").modal({
+                    show: true,
+                    keyboard: true
+                });
+            }
+        });
+    });
+
     //list filter
     $(document).on("change", ".autosend", function() {
         $('[name=filter]').submit();

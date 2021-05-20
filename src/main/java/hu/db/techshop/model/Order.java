@@ -55,7 +55,7 @@ public class Order {
     private String firstname;
     private String lastname;
     private int productCount;
-    private int ordetValue;
+    private int orderValue;
     private List<OrderItem> items;
 
     public Order() {
@@ -229,12 +229,12 @@ public class Order {
         this.productCount = productCount;
     }
 
-    public int getOrdetValue() {
-        return ordetValue;
+    public int getOrderValue() {
+        return orderValue;
     }
 
-    public void setOrdetValue(int ordetValue) {
-        this.ordetValue = ordetValue;
+    public void setOrderValue(int orderValue) {
+        this.orderValue = orderValue;
     }
 
     public List<OrderItem> getItems() {

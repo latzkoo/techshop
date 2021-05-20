@@ -22,6 +22,9 @@ public class InvoiceDAOImpl extends JdbcDaoSupport implements InvoiceDAO {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    InvoiceItemDAO invoiceItemDAO;
+
     @PostConstruct
     private void initialize() {
         setDataSource(dataSource);
@@ -42,7 +45,13 @@ public class InvoiceDAOImpl extends JdbcDaoSupport implements InvoiceDAO {
     @Override
     public Invoice findById(int id) {
         try {
-            String query = "SELECT * FROM TS_INVOICE WHERE ID=?";
+            String query = "SELECT I.*, M.PAYMENTMETHOD, " +
+                    "(SELECT COUNT(II.ID) FROM TS_INVOICE_ITEM II WHERE II.INVOICEID=I.ID) AS COUNT, " +
+                    "(SELECT SUM(II.PRICE * II.QTY) FROM TS_INVOICE_ITEM II WHERE II.INVOICEID=I.ID) AS VALUE " +
+                    "FROM TS_INVOICE I " +
+                    "LEFT JOIN TS_PAYMENT_METHOD M " +
+                    "ON I.PAYMENTMETHODID=M.ID " +
+                    "WHERE I.ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -79,12 +88,15 @@ public class InvoiceDAOImpl extends JdbcDaoSupport implements InvoiceDAO {
     private Invoice invoiceMapper(ResultSet result, boolean entity) throws SQLException {
         Invoice invoice = new Invoice();
         invoice.setId(result.getInt("id"));
-        invoice.setId(result.getInt("orderid"));
+        invoice.setOrderId(result.getInt("orderid"));
         invoice.setInvoiceDate(result.getTimestamp("invoicedate"));
         invoice.setDeliveryDate(result.getTimestamp("deliverydate"));
         invoice.setDueDate(result.getTimestamp("duedate"));
         invoice.setPaymentMethodId(result.getInt("paymentmethodid"));
         invoice.setCustomerName(result.getString("customername"));
+        invoice.setItemCount(result.getInt("count"));
+        invoice.setInvoiceValue(result.getInt("value"));
+        invoice.setPaymentMethod(result.getString("paymentmethod"));
 
         if (entity) {
             invoice.setSupplierName(result.getString("suppliername"));
@@ -100,11 +112,7 @@ public class InvoiceDAOImpl extends JdbcDaoSupport implements InvoiceDAO {
             invoice.setCustomerVat(result.getString("customervat"));
             invoice.setInvoiceComment(result.getString("invoicecomment"));
             invoice.setOriginalInvoiceId(result.getInt("originalinvoiceid"));
-        }
-        else {
-            invoice.setPaymentMethod(result.getString("paymentmethod"));
-            invoice.setItemCount(result.getInt("count"));
-            invoice.setInvoiceValue(result.getInt("value"));
+            invoice.setItems(invoiceItemDAO.findAll(invoice.getId()));
         }
 
         return invoice;

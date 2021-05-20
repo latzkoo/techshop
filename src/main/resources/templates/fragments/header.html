@@ -41,7 +41,6 @@
                 </div>
                 <div class="col-3">
                     <div class="icons">
-                        <div class="favourites"><span class="badge">0</span></div>
                         <div class="bag ml-3"><a href="/kosar">
                             <span class="badge" id="cartQty" th:text="${@cart.count()}"></span>
                             <span class="value" id="cartValue" th:text="${#numbers.formatInteger(@cart.value(), 0, 'WHITESPACE') + ' Ft'}"></span>
