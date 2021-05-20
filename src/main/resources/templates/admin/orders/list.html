@@ -31,6 +31,7 @@
                     <div class="col-6 pt-1 pr-3">
                         <form class="form-inline ml-md-3 mt-md-0" action="" autocomplete="off">
                             <div class="input-group-sm ml-auto">
+                                <input type="hidden" name="s" th:value="${#request.getParameter('s') != null ? #request.getParameter('s') : 1}" />
                                 <input class="form-control search-input" type="search" placeholder="Keresés" aria-label="Keresés" name="q"
                                        th:value="${#request.getParameter('q') != null ? #request.getParameter('q') : ''}" autocomplete="off" />
                             </div>
@@ -80,31 +81,46 @@
                     </thead>
                     <tbody>
                     <tr th:each="order, i : ${orderList}">
-                        <td><a class="link-operation text-secondary" th:href="'/admin/orders/edit?id=' + ${order.getId()} "
-                               th:text="${order.getLastname() + ' ' + order.getFirstname()}"></a></td>
+                        <td>
+                            <th:block th:if="${order.getStatusId() == 1}">
+                                <a class="link-operation text-secondary" th:href="'/admin/orders/edit/' + ${order.getId()} "
+                               th:text="${order.getLastname() + ' ' + order.getFirstname()}"></a>
+                            </th:block>
+                            <th:block th:if="${order.getStatusId() > 1}">
+                                <span th:text="${order.getLastname() + ' ' + order.getFirstname()}"></span>
+                            </th:block>
+                        </td>
                         <td th:text="${order.getProductCount()} + ' db'"></td>
                         <td th:text="${order.getPaymentMethod()}"></td>
                         <td class="fix200" th:text="${#dates.format(order.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"></td>
                         <td>
                             <div class="operations">
+                                <button type="button" class="btn btn-operations-small btn-success ml-1 button-status" title="Állapot módosítása"
+                                        th:attr="data-action=${'/admin/orders/status/' + order.getId()}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+                                    </svg>
+                                </button>
                                 <button type="button" class="btn btn-operations-small btn-info ml-1 button-show"
                                         title="Megtekintés" th:attr="data-href=${'/admin/orders/show/' + order.getId()}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                     </svg>
                                 </button>
-                                <a th:href="'/admin/orders/edit?id=' + ${order.getId()}">
-                                <button type="button" class="btn btn-operations-small btn-secondary ml-1" title="Szerkesztés">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
-                                    </svg>
-                                </button></a>
+                                <th:block th:if="${order.getStatusId() == 1}">
+                                    <a th:href="'/admin/orders/edit/=' + ${order.getId()}">
+                                    <button type="button" class="btn btn-operations-small btn-secondary ml-1" title="Szerkesztés">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                                        </svg>
+                                    </button></a>
+                                </th:block>
                                 <button type="button" class="btn btn-operations-small btn-danger ml-1 button-delete" title="Törlés"
-                                        th:attr="data-href=${'/admin/orders/delete?id=' + order.getId()}">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                                </svg>
+                                        th:attr="data-href=${'/admin/orders/delete/' + order.getId()}" th:if="${order.getStatusId() < 4}">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                                    </svg>
                                 </button>
                             </div>
                         </td>
@@ -115,6 +131,37 @@
         </div>
     </section>
 </main>
+
+<div class="modal" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="status" action="/admin/orders/status/" method="post">
+                <div class="modal-header">
+                    <h5>Rendelés állapotának módosítása</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-12 px-2">
+                            <label for="statusId">Állapot kiválasztása</label>
+                            <select class="form-control" name="statusId" id="statusId" required="required">
+                                <option value="">Válasszon!</option>
+                                <option th:each="status, i : ${statuses}" th:value="${status.getId()}"
+                                        th:text="${status.getStatus()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Mégsem</button>
+                    <button type="submit" class="btn btn-sm btn-success">Mentés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">

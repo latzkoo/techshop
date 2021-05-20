@@ -29,7 +29,7 @@ public class OrderStatusDAOImpl extends JdbcDaoSupport implements OrderStatusDAO
 
     @Override
     public List<OrderStatus> findAll() {
-        String query = "SELECT * FROM TS_ORDER_STATUS ORDER BY STATUS";
+        String query = "SELECT * FROM TS_ORDER_STATUS ORDER BY ID";
         return jdbcTemplate.query(query, (row, i) -> orderStatusMapper(row));
     }
 

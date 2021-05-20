@@ -54,6 +54,16 @@ $(window).bind("load", function () {
             });
     }
 
+    $(document).on("click", ".button-status", function() {
+        let action = $(this).data("action");
+        $("form[name=status]").attr("action", action);
+
+        $("#statusModal").modal({
+            show: true,
+            keyboard: false
+        });
+    });
+
     $(document).on("click", ".button-delete", function() {
         let href = $(this).data("href");
         $("#link-delete").attr("href", href);
@@ -68,106 +78,8 @@ $(window).bind("load", function () {
         $("button[type=submit]", $(this)).attr("disabled", "disabled");
     });
 
-    $(document).on("click", "#newItem", function() {
-        let lastItem = $("select[name='materialId[]']:last");
-        let type = $(this).data("url");
-
-        if (lastItem.val() !== "") {
-            $.ajax({
-                url: type + '/item',
-                type: 'GET',
-                headers: {},
-                data: {},
-                dataType: 'text',
-                beforeSend: function () {
-                },
-                success: function (data) {
-                    $("#newItems").append(data);
-                }
-            });
-        }
-        else {
-            lastItem.focus();
-        }
-    });
-
     $(document).on("click", ".button-delete-item", function() {
         $(this).closest('.row-item').remove();
-    });
-
-    $(document).on("change", "#shoppingMaterial", function() {
-        let measure = $(this).children("option:selected").data("measure");
-        $(".measure").html(measure);
-    });
-
-    // Measures
-    function setMeasureSelect(row, selectFirst) {
-        let material = $("[name=materialId]", row);
-
-        let measureCategoryId = parseInt(material.children("option:selected").data("mc"));
-        let customMeasureId = parseInt(material.children("option:selected").data("mcustomi"));
-        let measures = $("[name=measureId] option", row);
-
-        let matchingListElements = measures.filter(function() {
-            let id = parseInt($(this).val());
-            let categoryId = parseInt($(this).data("category"));
-
-            return ($(this).val() === "" || id === customMeasureId || categoryId === measureCategoryId);
-        });
-
-        if (selectFirst) {
-            $("[name=measureId]", row).val("");
-        }
-
-        measures.hide();
-        matchingListElements.show();
-    }
-
-    $(document).on("change", "[name=materialId]", function() {
-        let row = $(this).closest(".row-item");
-        setMeasureSelect(row, true);
-    });
-
-    $(".row-item").each(function () {
-        let row = $(this);
-        setMeasureSelect(row, false);
-    });
-
-    // Prepare
-    $(document).on("click", ".button-prepare", function() {
-        let recipeId = $(this).data("id");
-        let recipeName = $(this).data("name");
-
-        $("[name=recipeId]").val(recipeId);
-        $("#prepareModalLabel").html(recipeName + " elkészítése");
-
-        $("#prepareModal").modal({
-            show: true,
-            keyboard: true
-        });
-    });
-
-    $(document).on("click", "#prepareIt", function() {
-        let url = $("#formCookingRecipe").attr("action");
-        let formData = $("#formCookingRecipe").serialize();
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            headers: {},
-            data: formData,
-            dataType: 'text',
-            beforeSend: function () {
-            },
-            success: function (data) {
-                $("body").prepend(data);
-                $("#prepareModal").modal("toggle");
-                $("#prepareMessageModal").modal({
-                    show: true,
-                    keyboard: true
-                });
-            }
-        });
     });
 
     // Show order

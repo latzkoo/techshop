@@ -37,4 +37,21 @@
             </div>
         </nav>
     </div>
+    <div class="nav-scroller bg-white shadow-sm" th:if="${orderList != null}">
+        <div class="container">
+            <nav class="nav nav-underline">
+                <a class="nav-link" th:classappend="${#request.getParameter('s') == null ||
+                (#request.getParameter('s') != null && #request.getParameter('s').equals('1')) ? 'text-primary' : 'text-dark'}"
+                   href="/admin/orders">Új</a>
+                <a class="nav-link" th:classappend="${#request.getParameter('s') != null &&
+                #request.getParameter('s').equals('2') ? 'text-primary' : 'text-dark'}" href="/admin/orders?s=2">Fizetve</a>
+                <a class="nav-link" th:classappend="${#request.getParameter('s') != null &&
+                #request.getParameter('s').equals('3') ? 'text-primary' : 'text-dark'}" href="/admin/orders?s=3">Kiszállítva</a>
+                <a class="nav-link" th:classappend="${#request.getParameter('s') != null &&
+                #request.getParameter('s').equals('4') ? 'text-primary' : 'text-dark'}" href="/admin/orders?s=4">Lezárva</a>
+                <a class="nav-link" th:classappend="${#request.getParameter('s') != null &&
+                #request.getParameter('s').equals('5') ? 'text-primary' : 'text-dark'}" href="/admin/orders?s=5">Törölve</a>
+            </nav>
+        </div>
+    </div>
 </header>

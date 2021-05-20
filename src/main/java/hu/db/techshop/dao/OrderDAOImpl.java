@@ -34,8 +34,8 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     }
 
     @Override
-    public List<Order> findAll() {
-        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+    public List<Order> findAll(int statusId) {
+        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, S.STATUS, " +
                 "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
                 "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
                 "FROM TS_ORDER O " +
@@ -43,13 +43,18 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
                 "ON O.USERID=U.ID " +
                 "LEFT JOIN TS_PAYMENT_METHOD M " +
                 "ON O.PAYMENTMETHODID=M.ID " +
+                "LEFT JOIN TS_ORDER_STATUS S " +
+                "ON O.STATUSID=S.ID " +
+                "WHERE O.STATUSID=? " +
                 "ORDER BY O.CREATEDAT DESC";
-        return jdbcTemplate.query(query, (row, i) -> orderMapper(row, false, false));
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setInt(1, statusId);
+        }, (row, i) -> orderMapper(row, false, false));
     }
 
     @Override
-    public List<Order> findAll(String keyword) {
-        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+    public List<Order> findAll(int statusId, String keyword) {
+        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, S.STATUS, " +
                 "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
                 "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
                 "FROM TS_ORDER O " +
@@ -57,16 +62,24 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
                 "ON O.USERID=U.ID " +
                 "LEFT JOIN TS_PAYMENT_METHOD M " +
                 "ON O.PAYMENTMETHODID=M.ID " +
-                "WHERE (O.ID IN(" +
+                "LEFT JOIN TS_ORDER_STATUS S " +
+                "ON O.STATUSID=S.ID " +
+                "WHERE O.STATUSID=? " +
+                "AND (LOWER(U.FIRSTNAME) LIKE ? OR LOWER(U.LASTNAME) LIKE ? OR U.EMAIL LIKE ? " +
+                "OR (O.ID IN(" +
                     "SELECT OI.ORDERID " +
                     "FROM TS_ORDER_ITEM OI, TS_PRODUCT P " +
                     "WHERE OI.PRODUCTID=P.ID " +
-                    "AND LOWER(P.PRODUCTNAME) LIKE ?) OR M.PAYMENTMETHOD LIKE ?)" +
+                    "AND LOWER(P.PRODUCTNAME) LIKE ?) OR M.PAYMENTMETHOD LIKE ?))" +
                 "ORDER BY O.CREATEDAT DESC";
 
         return jdbcTemplate.query(query, preparedStatement -> {
-            preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setInt(1, statusId);
             preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(3, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(4, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(5, "%"+ keyword.toLowerCase() +"%");
+            preparedStatement.setString(6, "%"+ keyword.toLowerCase() +"%");
         }, (row, i) -> orderMapper(row, false, false));
     }
 
@@ -93,20 +106,22 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     @Override
     public Order findById(int id) {
         try {
-            String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
+            String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, S.STATUS, " +
                     "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
                     "FROM TS_ORDER O " +
                     "LEFT JOIN TS_PAYMENT_METHOD M " +
                     "ON O.PAYMENTMETHODID=M.ID " +
                     "LEFT JOIN TS_USER U " +
                     "ON O.USERID=U.ID " +
+                    "LEFT JOIN TS_ORDER_STATUS S " +
+                    "ON O.STATUSID=S.ID " +
                     "WHERE O.ID=?";
             PreparedStatement statement = getConnection().prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Order order = orderMapper(result, true, false);
+                Order order = orderMapper(result, true, true);
                 order.setItems(orderItemDAO.findAll(id));
                 statement.close();
 
@@ -183,6 +198,21 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         }
 
         return null;
+    }
+
+    @Override
+    public void setStatus(int id, int statusId) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE TS_ORDER SET STATUSID=? WHERE ID=?");
+            statement.setInt(1, statusId);
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
