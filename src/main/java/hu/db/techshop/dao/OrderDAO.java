@@ -8,6 +8,7 @@ public interface OrderDAO {
 
     List<Order> findAll();
     List<Order> findAll(String keyword);
+    List<Order> findAllByUserId(int id);
     Order findById(int id);
     Order save(Order order, int userId);
     void delete(int orderId);

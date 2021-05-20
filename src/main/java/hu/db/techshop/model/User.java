@@ -28,6 +28,7 @@ public class User {
 
     private boolean admin;
     private Timestamp createdAt;
+    private int points;
 
     public User() {
     }
@@ -135,5 +136,13 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

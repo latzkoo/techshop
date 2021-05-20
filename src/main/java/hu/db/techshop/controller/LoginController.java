@@ -39,6 +39,7 @@ public class LoginController {
         }
 
         request.getSession().setAttribute("USERID", user.getId());
+        request.getSession().setAttribute("FIRSTNAME", user.getFirstname());
 
         if (user.isAdmin()) {
             request.getSession().setAttribute("ADMIN", 1);
@@ -50,6 +51,7 @@ public class LoginController {
     @GetMapping(value = "/kilepes")
     public String logout(Model model, HttpServletRequest request) {
         request.getSession().removeAttribute("USERID");
+        request.getSession().removeAttribute("FIRSTNAME");
         request.getSession().removeAttribute("ADMIN");
 
         return "redirect:/";

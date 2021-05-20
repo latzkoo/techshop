@@ -36,20 +36,22 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
     @Override
     public List<Order> findAll() {
         String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
-                    "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
+                "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
                 "FROM TS_ORDER O " +
                 "LEFT JOIN TS_USER U " +
                 "ON O.USERID=U.ID " +
                 "LEFT JOIN TS_PAYMENT_METHOD M " +
                 "ON O.PAYMENTMETHODID=M.ID " +
                 "ORDER BY O.CREATEDAT DESC";
-        return jdbcTemplate.query(query, (row, i) -> orderMapper(row, false));
+        return jdbcTemplate.query(query, (row, i) -> orderMapper(row, false, false));
     }
 
     @Override
     public List<Order> findAll(String keyword) {
         String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, " +
-                "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT " +
+                "(SELECT COUNT(I.ID) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
+                "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
                 "FROM TS_ORDER O " +
                 "LEFT JOIN TS_USER U " +
                 "ON O.USERID=U.ID " +
@@ -65,7 +67,27 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         return jdbcTemplate.query(query, preparedStatement -> {
             preparedStatement.setString(1, "%"+ keyword.toLowerCase() +"%");
             preparedStatement.setString(2, "%"+ keyword.toLowerCase() +"%");
-        }, (row, i) -> orderMapper(row, false));
+        }, (row, i) -> orderMapper(row, false, false));
+    }
+
+    @Override
+    public List<Order> findAllByUserId(int id) {
+        String query = "SELECT O.*, U.FIRSTNAME, U.LASTNAME, M.PAYMENTMETHOD, S.STATUS, " +
+                "(SELECT SUM(I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS COUNT, " +
+                "(SELECT SUM(I.PRICE * I.QTY) FROM TS_ORDER_ITEM I WHERE I.ORDERID=O.ID) AS VALUE " +
+                "FROM TS_ORDER O " +
+                "LEFT JOIN TS_USER U " +
+                "ON O.USERID=U.ID " +
+                "LEFT JOIN TS_PAYMENT_METHOD M " +
+                "ON O.PAYMENTMETHODID=M.ID " +
+                "LEFT JOIN TS_ORDER_STATUS S " +
+                "ON O.STATUSID=S.ID " +
+                "WHERE O.USERID=? " +
+                "ORDER BY O.CREATEDAT DESC";
+
+        return jdbcTemplate.query(query, preparedStatement -> {
+            preparedStatement.setInt(1, id);
+        }, (row, i) -> orderMapper(row, false, true));
     }
 
     @Override
@@ -84,7 +106,7 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Order order = orderMapper(result, true);
+                Order order = orderMapper(result, true, false);
                 order.setItems(orderItemDAO.findAll(id));
                 statement.close();
 
@@ -178,12 +200,14 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
         }
     }
 
-    private Order orderMapper(ResultSet result, boolean entity) throws SQLException {
+    private Order orderMapper(ResultSet result, boolean entity, boolean withItems) throws SQLException {
         Order order = new Order();
         order.setId(result.getInt("id"));
         order.setPaymentMethodId(result.getInt("paymentmethodid"));
         order.setCreatedAt(result.getTimestamp("createdat"));
         order.setPaymentMethod(result.getString("paymentmethod"));
+        order.setStatusId(result.getInt("statusid"));
+        order.setStatus(result.getString("status"));
 
         if (entity) {
             order.setShippingName(result.getString("shipname"));
@@ -201,6 +225,11 @@ public class OrderDAOImpl extends JdbcDaoSupport implements OrderDAO {
             order.setFirstname(result.getString("firstname"));
             order.setLastname(result.getString("lastname"));
             order.setProductCount(result.getInt("count"));
+            order.setOrdetValue(result.getInt("value"));
+        }
+
+        if (withItems) {
+            order.setItems(orderItemDAO.findAll(order.getId()));
         }
 
         return order;

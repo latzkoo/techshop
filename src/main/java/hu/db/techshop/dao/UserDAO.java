@@ -12,5 +12,6 @@ public interface UserDAO {
     User save(User user);
     int delete(User user);
     User getUserByEmailAndPassword(String email, String password, boolean checkAdmin);
+    User updatePassword(User user);
 
 }

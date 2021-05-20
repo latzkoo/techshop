@@ -112,3 +112,8 @@ button[disabled] .spinner-grow,
 button[disabled] .spinner-border {
     display: inline-block;
 }
+.status-badge {
+    position: absolute;
+    top: 12px;
+    right: 35px;
+}

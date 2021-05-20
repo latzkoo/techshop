@@ -49,11 +49,13 @@ public class Order {
     private boolean terms;
 
     private int statusId;
+    private String status;
     private Timestamp createdAt;
     private String paymentMethod;
     private String firstname;
     private String lastname;
     private int productCount;
+    private int ordetValue;
     private List<OrderItem> items;
 
     public Order() {
@@ -179,6 +181,14 @@ public class Order {
         this.statusId = statusId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -219,6 +229,14 @@ public class Order {
         this.productCount = productCount;
     }
 
+    public int getOrdetValue() {
+        return ordetValue;
+    }
+
+    public void setOrdetValue(int ordetValue) {
+        this.ordetValue = ordetValue;
+    }
+
     public List<OrderItem> getItems() {
         return items;
     }
@@ -226,4 +244,5 @@ public class Order {
     public void setItems(List<OrderItem> items) {
         this.items = items;
     }
+
 }

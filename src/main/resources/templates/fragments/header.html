@@ -6,7 +6,8 @@
                 <div class="col-12 col-md-6">A legolcsóbb tech webáruház</div>
                 <div class="col-12 col-md-6 text-right">
                     <th:block th:if="${session.USERID}">
-                        <a href="/beallitasok">Beállítások</a>
+                        <span class="mr-4" th:text="${'Üdv, ' + session.FIRSTNAME + '!'}"></span>
+                        <a href="/fiokom">Fiókom</a>
                         <a class="ml-4" href="/kilepes">Kijelentkezés</a>
                     </th:block>
                     <th:block th:if="!${session.USERID}">

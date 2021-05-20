@@ -148,6 +148,7 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
         user.setPassword(result.getString("password"));
         user.setCreatedAt(result.getTimestamp("createdat"));
         user.setAdmin(result.getBoolean("admin"));
+        user.setPoints(result.getInt("points"));
 
         return user;
     }
@@ -175,6 +176,25 @@ public class UserDAOImpl extends JdbcDaoSupport implements UserDAO {
 
                 statement.close();
             }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public User updatePassword(User user) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("UPDATE TS_USER SET PASSWORD=? WHERE ID=?");
+            statement.setString(1, passwordEncoder.encode(user.getPassword()));
+            statement.setInt(2, user.getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+            return user;
         }
         catch (SQLException e) {
             e.printStackTrace();
